@@ -1,0 +1,48 @@
+{
+  "name": "obm",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "dependencies": {
+    "angular-chart.js": "^1.1.1",
+    "chart.js": "^2.6.0",
+    "angular": "^1.7.3",
+    "angular-animate": "^1.7.3",
+    "angular-bootstrap": "^0.12.2",
+    "angular-touch": "^1.7.3",
+    "angular-translate": "^2.18.1",
+    "angular-ui": "^1.0.0",
+    "angular-ui-bootstrap": "^2.5.6",
+    "angular-ui-notification": "^0.3.6",
+    "angular-ui-router": "^1.0.20",
+    "angularjs": "0.0.1",
+    "bootstrap": "^3.3.7",
+    "ng-annotate": "^1.2.2"
+  },
+  "devDependencies": {
+    "gulp": "^4.0.0",
+    "gulp-autoprefixer": "^6.0.0",
+    "gulp-clean-css": "^3.10.0",
+    "gulp-concat": "^2.6.1",
+    "gulp-cssmin": "^0.2.0",
+    "gulp-ng-annotate": "^2.1.0",
+    "gulp-ngmin": "^0.3.0",
+    "gulp-plumber": "^1.2.0",
+    "gulp-sass": "^3.2.1",
+    "gulp-scss": "^1.4.0",
+    "gulp-uglify": "^3.0.1",
+    "jasmine": "^2.6.0",
+    "jasmine-core": "^2.6.3",
+    "karma": "^3.0.0",
+    "karma-chrome-launcher": "^2.1.1",
+    "karma-jasmine": "^1.1.0",
+    "karma-junit-reporter": "^1.2.0"
+  },
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "run": "gulp",
+    "prod": "gulp prod"
+  },
+  "author": "",
+  "license": "ISC"
+}

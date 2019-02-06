@@ -1,0 +1,105 @@
+<div class="row" ng-controller="SchCtrl as $ctrl">
+
+    <script type="text/ng-template" id="newTask.html">
+        <div class="modal-header">
+            <h3 class="modal-title" id="NewTaskHeader">New Task</h3>
+        </div>
+        <div class="modal-body" id="NewTaskBody">
+            <div class="row">
+              <div class="col-sm-6">
+                <h4>Begin time and date</h4>
+                <div>
+                  <input type="text" class="form-control input-lg newTask-date" uib-datepicker-popup="{{format}}" ng-model="$ctrl.FormData.dt" alt-input-formats="altInputFormats" is-open="popup1.opened" datepicker-options="dateOptions" ng-required="true" close-text="Close" />
+                </div>
+                <div>
+                  <span class="btn-group">
+                    <button type="button" class="btn btn-lg btn-default" ng-click="open1()"><i class="glyphicon glyphicon-calendar"></i></button>
+                    <button type="button" class="btn btn-default btn-lg" ng-click="plusMin(1)"><i class="glyphicon glyphicon-plus"></i></button>
+                    <button type="button" class="btn btn-default btn-lg" ng-click="minusMin(1)"><i class="glyphicon glyphicon-minus"></i></button>
+                    <button type="button" class="btn btn-lg btn-info" ng-click="today()">Today</button>
+                  </span>
+                </div>
+              </div>
+              <div class="col-sm-6">
+                 <h4>Finish time and date</h4>
+                 <div>
+                  <input type="text" class="form-control input-lg newTask-date" uib-datepicker-popup="{{format}}" ng-model="$ctrl.FormData.edt" is-open="popup2.opened" datepicker-options="dateOptions" ng-required="true" close-text="Close" alt-input-formats="altInputFormats" />
+                 </div>
+                 <div>
+                  <span class="btn-group">
+                    <button type="button" class="btn btn-lg btn-default" ng-click="open2()"><i class="glyphicon glyphicon-calendar"></i></button>
+                    <button type="button" class="btn btn-default btn-lg" ng-click="plusMin(2)"><i class="glyphicon glyphicon-plus"></i></button>
+                    <button type="button" class="btn btn-default btn-lg" ng-click="minusMin(2)"><i class="glyphicon glyphicon-minus"></i></button>
+                    <button type="button" class="btn btn-lg btn-info" ng-click="today()">Today</button>
+                  </span>
+                  </div>
+              </div>
+            </div>
+
+        </div>
+        <div class="modal-footer">
+            <button class="btn btn-lg btn-danger" type="button" ng-click="$ctrl.cancel()">Cancel</button>
+            <button class="btn btn-lg btn-primary" type="button" ng-click="$ctrl.ok()">CREATE</button>
+        </div>
+    </script>
+
+
+    <div class="col-md-12 col-sm-12 col-lg-8 col-lg-offset-2">
+        <h2>Scheduler</h2>
+        <table class="table scheduler" >
+            <thead>
+                <tr>
+                    <th>id</th>
+                    <th>Begin Time</th>
+                    <th>End Time</th>
+                    <th></th>
+                </tr>
+            </thead>
+            <tbody >
+                <tr ng-repeat="item in $ctrl.schedule">
+                    <td>{{ item.id }}</td>
+                    <td class="{{ item.begin_time.result }}">{{ item.TimeStart | date: $ctrl.dateFormat }}</td>
+                    <td class="{{ item.end_time.result }}">{{ item.TimeEnd | date: $ctrl.dateFormat }}</td>
+                    <td><a class="delete btn btn-danger" ng-click="deleteTask($index)">X</a></td>
+                </tr>
+            </tbody>
+        </table>
+        <hr>
+
+        <div class="row">
+            <div class="col-xs-12 col-sm-5">
+                <button class="btn btn-success btn-lg" type="button" ng-click="$ctrl.open('lg')" ng-disabled="!$ctrl.scheduleValid">
+                  {{ 'create_new_task' | translate }}
+                </button>
+            </div>
+            <div class="col-xs-12 col-sm-7">
+                <label>Date Format: <select class="form-control" ng-model="$ctrl.dateFormat" ng-options="f for f in $ctrl.dateFormats"><option></option></select></label>
+            </div>
+        </div>
+
+        <h3>Legend:</h3>
+        <table class="table scheduler">
+            <tr>
+                <td class="done">Task Done</td>
+                <td class="run">Task Run</td>
+                <td class="planned">Task Planned</td>
+                <td class="error">Error</td>
+                <td class="late">Task Expired</td>
+                <td class="manual">Manual task</td>
+            </tr>
+        </table>
+
+
+        <hr>
+
+         <pre>
+           {{ $ctrl.status | json }}
+           {{ $ctrl.scheduleValid | json }}
+        </pre>
+
+
+    </div>
+
+</div>
+
+

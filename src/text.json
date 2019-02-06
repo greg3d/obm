@@ -1,0 +1,207 @@
+ [ { 
+    "title": "System State",
+    "nodes": [
+      {
+        "title": "Global State",
+        "value": "0"
+      },
+      { 
+        "title": "Controllers",
+        "nodes": [
+          {
+            "title": "Preprocessing",
+            "value": 1
+          },{
+            "title": "Processing",
+            "value": 1
+          },{
+            "title": "TWS Controller",
+            "value": 1
+          }
+        ]
+      },
+      { 
+        "title": "Synchronisation",
+        "nodes": [
+          {
+
+            "title": "Power",
+            "value": 1
+          },{
+
+            "title": "Channel 1",
+            "value": 1
+          },{
+
+            "title": "Channel 2",
+            "value": 1
+          },{
+
+            "title": "Channel 3",
+            "value": 1
+          },{
+
+            "title": "Channel 4",
+            "value": 1
+          },{
+
+            "title": "Channel 5",
+            "value": 1
+          },{
+
+            "title": "Channel 6",
+            "value": 1
+          },{
+
+            "title": "Channel 7",
+            "value": 1
+          }
+        ]
+      }
+      ,
+      {
+        "title" : "Sensors",
+        "nodes" : [
+          {
+            "title": "Balisa Reader",
+            "nodes": [
+              {
+                "title":"Power",
+                "value":"1"
+              },{
+                "title":"Amplifier",
+                "value":"1"
+              }
+            ]
+          },{
+            "title": "Tensometric wheels",
+            "nodes": [
+              {
+                "title":"Power",
+                "value":"1"
+              }
+            ]
+          },{
+            "title": "IMU",
+            "nodes": [
+              {
+                "title":"Power",
+                "value":"1"
+              },{
+                "title":"Validation",
+                "value":"1"
+              }
+            ]
+          },{
+            "title": "ADC1",
+            "nodes": [
+              {
+                "title":"Power",
+                "value":"1"
+              },{
+                "title":"Validation",
+                "value":"1"
+              }
+            ]
+          },{
+            "title": "ADC2",
+            "nodes": [
+              {
+                "title":"Power",
+                "value":"1"
+              },{
+                "title":"Validation",
+                "value":"1"
+              }
+            ]
+          },{
+            "title": "ADC3",
+            "nodes": [
+              {
+                "title":"Power",
+                "value":"1"
+              },{
+                "title":"Validation",
+                "value":"1"
+              }
+            ]
+          },{
+            "title": "ADC4",
+            "nodes": [
+              {
+                "title":"Power",
+                "value":"1"
+              },{
+                "title":"Validation",
+                "value":"1"
+              }
+            ]
+          },{
+            "title": "ADC5",
+            "nodes": [
+              {
+                "title":"Power",
+                "value":"1"
+              },{
+                "title":"Validation",
+                "value":"1"
+              }
+            ]
+          },{
+            "title": "ADC6",
+            "nodes": [
+              {
+                "title":"Power",
+                "value":"1"
+              },{
+                "title":"Validation",
+                "value":"1"
+              }
+            ]
+          }
+        ]
+      }
+    ]
+},
+{
+  "title":"Software Modules",
+  "nodes":[
+    {
+      "title": "DASD",
+      "nodes":[
+        {
+          "title" : "Available",
+          "value" : "YES"
+        },{
+          "title" : "Errors",
+          "value" : "NO"
+        },{
+          "title" : "Read Write Error",
+          "value" : "NO"
+        },{
+          "title" : "Module Versions",
+          "value" : "2.02.25"
+        }
+      ]
+    },{
+      "title": "DBAL",
+      "check": 1,
+      "nodes":[
+        {
+          "title" : "Available",
+          "value" : "YES"
+        },{
+          "title" : "Errors",
+          "value" : "NO"
+        },{
+          "title" : "Read Write Error",
+          "value" : "NO"
+        },{
+          "title" : "Module Versions",
+          "value" : "1.04.37"
+        }
+      ]
+    }
+  ]
+
+}]

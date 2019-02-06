@@ -1,0 +1,39 @@
+input.form-control{
+  color: white;
+
+  padding: 3px 7px;
+  background: rgba(0,0,0,0.2);
+  border-radius: 5px;
+  box-shadow: inset 1px 1px 3px rgba(0,0,0,0.4);
+
+
+
+}
+
+.control-label {
+    line-height: auto;
+    //border: 1px solid black;
+    padding: 7px 10px;
+    background: rgba(0,0,0,0.1)
+}
+
+.control-label.admin {
+  background: rgba(30,20,0,0.3)
+}
+
+
+h3.settings-category-title {
+  font-weight: bold;
+  padding-top: 15px;
+  color: #aaf;
+}
+
+.maxmin {
+  color: rgba(200,200,230,0.6);
+  font-size: 80%;
+}
+
+.maxmin .unit {
+  color: rgba(240,240,190,0.7);
+   font-size: 100%;
+}

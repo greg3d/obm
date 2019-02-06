@@ -1,0 +1,158 @@
+{
+	"mode":"MR_STAND_BY",
+	"debug":"false",
+	"auto":true,
+	"modules":[
+		{"title":"контроль внешнего UPS","name":1002,"value":["NA",false]},
+		{"title":"Контроль наличия входного напряжения ИБП ","name":1001,"value":["NA",false]},
+		{"title":"управление клапан пневмомагистрали","name":1004,"value":["NA",false]},
+		{"title":"Входной клапан пневмомагистрали","name":1003,"value":["NA",false]},
+		{"title":"управление Сброс конденсата клапаном K1","name":1006,"value":["NA",false]},
+		{"title":"Сброс конденсата клапаном K1","name":1005,"value":["NA",false]},
+		{"title":"управление Сброс конденсата клапаном K2","name":1008,"value":["NA",false]},
+		{"title":"Сброс конденсата клапаном K2","name":1007,"value":["NA",false]},
+		{"title":"контроль Контроль наличия выходного напряжения ИБП","name":1010,"value":["NA",false]},
+		{"title":"Контроль наличия выходного напряжения ИБП","name":1009,"value":["NA",false]},
+		{"title":"Контроль работоспособности БП24 №1 для СУ (до ИБП)","name":1012,"value":["NA",false]},
+		{"title":"Контроль работоспособности БП24 №2 для СУ (после ИБП)","name":1013,"value":["NA",false]},
+		{"title":"Контроль работоспособности БП24 №1 (после ИБП). Питание систем – см. примечание ","name":1014,"value":["NA",false]},
+		{"title":"Контроль работоспособности БП24 (после ИБП). Горячий резерв питания блоков питания систем №1 и №2","name":1015,"value":["NA",false]},
+		{"title":"Контроль работоспособности БП24 №2 (после ИБП). Питание систем – см. примечание ","name":1016,"value":["NA",false]},
+		{"title":"Контроль питания БП","name":1011,"value":["NA",false]},
+		{"title":"СЭС","name":1000,"value":["NA",false]},
+		
+		
+		{"title":"питание сканеров","name":3003,"value":["NA",false]},
+		{"title":"контроль питания сканеров","name":3004,"value":["NA",false]},
+		{"title":"Питание Сканеров","name":3002,"value":["NA",false]},
+		
+		{"title":"питание ДИН","name":3006,"value":["NA",false]},
+		{"title":"контроль питания ДИН","name":3007,"value":["NA",false]},
+		{"title":"ДИН","name":3005,"value":["NA",false]},
+		
+		{"title":"питание лазеров 12","name":3009,"value":["NA",false]},
+		{"title":"Вкл/выкл лазеров оптических сканеров сечений 2 и 1","name":3008,"value":["NA",false]},
+		
+		{"title":"управление KP00","name":3011,"value":["NA",false]},
+		{"title":"контроль KP00","name":3012,"value":["NA",false]},
+		{"title":"контроль сети KP00","name":3013,"value":["OFF",true]},
+		{"title":"KP00","name":3010,"value":["NA",false]},
+		
+		{"title":"управление KP10","name":3015,"value":["NA",false]},
+		{"title":"контроль KP10","name":3016,"value":["NA",false]},
+		{"title":"контроль сети KP10","name":3017,"value":["OFF",true]},
+		{"title":"KP10","name":3014,"value":["NA",false]},
+		
+		{"title":"управление KP11","name":3019,"value":["NA",false]},
+		{"title":"контроль KP11","name":3020,"value":["NA",false]},
+		{"title":"контроль сети KP11","name":3021,"value":["OFF",true]},
+		{"title":"KP11","name":3018,"value":["NA",false]},
+		
+		{"title":"управление KP20","name":3023,"value":["NA",false]},
+		{"title":"контроль KP20","name":3024,"value":["NA",false]},
+		{"title":"контроль сети KP20","name":3025,"value":["OFF",true]},
+		{"title":"KP20","name":3022,"value":["NA",false]},
+		
+		{"title":"управление KP21","name":3027,"value":["NA",false]},
+		{"title":"контроль KP21","name":3028,"value":["NA",false]},
+		{"title":"контроль сети KP21","name":3029,"value":["OFF",true]},
+		{"title":"KP21","name":3026,"value":["NA",false]},
+		
+		{"title":"управление KP23","name":3031,"value":["NA",false]},
+		{"title":"контроль KP23","name":3032,"value":["NA",false]},
+		{"title":"контроль сети KP23","name":3033,"value":["OFF",true]},
+		{"title":"KP23","name":3030,"value":["NA",false]},
+		
+		{"title":"управление вкл NAS1","name":3035,"value":["NA",false]},
+		{"title":"управление выкл NAS1","name":3036,"value":["NA",false]},
+		{"title":"контроль NAS1","name":3037,"value":["NA",false]},
+		{"title":"контроль NAS1 сеть","name":3038,"value":["OFF",true]},
+		{"title":"NAS1","name":3034,"value":["NA",false]},
+		
+		{"title":"управление синхронизации","name":3040,"value":["NA",false]},
+		{"title":"контроль синхронизации","name":3041,"value":["NA",false]},
+		{"title":"контроль сети синхронизации","name":3042,"value":["OFF",true]},
+		{"title":"Блок синхронизации","name":3039,"value":["NA",false]},
+		
+		{"title":"управление одометра","name":3044,"value":["NA",false]},
+		{"title":"контроль одометра","name":3045,"value":["NA",false]},
+		{"title":"контроль сети одометра","name":3046,"value":["OFF",true]},
+		{"title":"Блок одометра","name":3043,"value":["NA",false]},
+		
+		{"title":"управление СКТР","name":3048,"value":["NA",false]},
+		{"title":"контроль СКТР","name":3049,"value":["NA",false]},
+		{"title":"СКТР","name":3047,"value":["NA",false]},
+		
+		{"title":"ПРОФИЛЬНАЯ система","name":3001,"value":["NA",false]},
+		
+		{"title":"обогрев S24","name":3053,"value":["NA",false]},
+		{"title":"контроль обогрева S24","name":3054,"value":["NA",false]},
+		{"title":"Обогрев Сканера S24","name":3052,"value":["NA",false]},
+		
+		{"title":"обогрев S23","name":3056,"value":["NA",false]},
+		{"title":"контроль обогрева S23","name":3057,"value":["NA",false]},
+		{"title":"Обогрев Сканера S23","name":3055,"value":["NA",false]},
+		
+		{"title":"обогрев S22","name":3059,"value":["NA",false]},
+		{"title":"контроль обогрева S22","name":3060,"value":["NA",false]},
+		{"title":"Обогрев Сканера S22","name":3058,"value":["NA",false]},
+		
+		{"title":"обогрев S21","name":3062,"value":["NA",false]},
+		{"title":"контроль обогрева S21","name":3063,"value":["NA",false]},
+		{"title":"Обогрев Сканера S21","name":3061,"value":["NA",false]},
+		
+		{"title":"обогрев S12","name":3065,"value":["NA",false]},
+		{"title":"контроль обогрева S12","name":3066,"value":["NA",false]},
+		{"title":"Обогрев Сканера S12","name":3064,"value":["NA",false]},
+		
+		{"title":"обогрев S11","name":3068,"value":["NA",false]},
+		{"title":"контроль обогрева S11","name":3069,"value":["NA",false]},
+		{"title":"Обогрев Сканера S11","name":3067,"value":["NA",false]},
+		{"title":"Обогрев Сканеров","name":3051,"value":["NA",false]},
+		
+		{"title":"Продувка S24","name":3071,"value":["NA",false]},
+		{"title":"Продувка S22","name":3072,"value":["NA",false]},
+		{"title":"Продувка S23","name":3073,"value":["NA",false]},
+		{"title":"Продувка S21","name":3074,"value":["NA",false]},
+		{"title":"Продувка S12","name":3075,"value":["NA",false]},
+		{"title":"Продувка S11","name":3076,"value":["NA",false]},
+		{"title":"Продувка Сканеров","name":3070,"value":["NA",false]},
+		
+		{"title":"управление Наддув ИП","name":3078,"value":["NA",false]},
+		{"title":"Наддув ИП","name":3077,"value":["NA",false]},
+		{"title":"управление Охлаждение ИП","name":3080,"value":["NA",false]},
+		{"title":"Охлаждение ИП","name":3079,"value":["NA",false]},
+		
+		{"title":"управление Вкл/выкл обогрева бленд","name":3082,"value":["NA",false]},
+		{"title":"Вкл/выкл обогрева бленд","name":3081,"value":["NA",false]},
+		{"title":"управление Вкл/выкл обогрева датчика температуры рельсов 1","name":3084,"value":["NA",false]},
+		{"title":"Вкл/выкл обогрева СКТР1","name":3083,"value":["NA",false]},
+		{"title":"управление Вкл/выкл обогрева датчика температуры рельсов 2","name":3086,"value":["NA",false]},
+		{"title":"Вкл/выкл обогрева СКТР2","name":3085,"value":["NA",false]},
+		{"title":"Термостабилизация","name":3050,"value":["NA",false]},
+		
+		{"title":"Оборудование","name":3000,"value":["NA",false]},
+		
+		{"title":"Root","name":999,"value":["NA",false]}
+	],
+	"sensors":[
+		{"title":"Реле давления воздуха ВД","unit":"d","name":9000,"value":[0.0,false]},
+		{"title":"Реле давления воздуха НД","unit":"ddd","name":9001,"value":[0.0,false]},
+		{"title":"Датчик температуры сканера S24","unit":"","name":9002,"value":[0.0,false]},
+		{"title":"Датчик температуры сканера S22","unit":"","name":9003,"value":[0.0,false]},
+		{"title":"Датчик температуры сканера S23","unit":"","name":9004,"value":[0.0,false]},
+		{"title":"Датчик температуры сканера S21","unit":"","name":9005,"value":[0.0,false]},
+		{"title":"Датчик температуры сканера S12","unit":"","name":9006,"value":[0.0,false]},
+		{"title":"Датчик температуры сканера S11","unit":"","name":9007,"value":[0.0,false]},
+		{"title":"Датчик 1температуры в измерительном сечении 3","unit":"","name":9008,"value":[0.0,false]},
+		{"title":"Датчик 2температуры в измерительном сечении 3","unit":"","name":9009,"value":[0.0,false]},
+		{"title":"Датчик 1 температуры в измерительном сечении 1","unit":"","name":9010,"value":[0.0,false]},
+		{"title":"Датчик 2 температуры в измерительном сечении 1","unit":"","name":9011,"value":[0.0,false]},
+		{"title":"Датчик температуры датчика температуры рельсов 1","unit":"","name":9012,"value":[0.0,false]},
+		{"title":"Датчик температуры датчика температуры рельсов 2","unit":"","name":9013,"value":[0.0,false]},
+		{"title":"Датчик температуры воздуха, поступающего в стойку с оборудованием","unit":"","name":9014,"value":[0.0,false]},
+		{"title":"Датчик температуры в стойке с оборудованием \n(автоматическое отключение аппаратуры при превышении температуры в стойке +40°С)","unit":"","name":9015,"value":[0.0,false]},
+		{"title":"Sensors","name":998,"value":["NA",false]}
+	],
+	"nas":{"storage":0.0,"unit":"Mb","valid":false}
+}

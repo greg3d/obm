@@ -1,0 +1,365 @@
+body {
+  background: #222;
+  font-family: "Scada";
+  background: url('images/background.jpg');
+  background-size: 100%, auto;
+}
+
+a {
+  color: #99e;
+  text-decoration: underline;
+}
+a:hover {
+  color: #ccf;
+}
+
+
+$white: #fff;
+
+$mTop: 25px;
+
+.heading {
+  text-align: center;
+  color: $white;
+  text-shadow: 2px 2px 1px #373a4d;
+
+position: relative;
+    height: 100px;
+}
+
+.copyright {
+  text-align: center;
+  color: $white;
+
+  padding-top: 32px;
+  position: relative;
+
+}
+
+.heading h1 {
+  padding: 0;
+  margin: 0;
+  position: relative;
+  top: 29px;
+}
+
+.heading .version {
+
+  font-size: 16px;
+  display: block;
+
+
+}
+
+.heading .version b {
+ color: yellow;
+}
+
+.infotrans-logo {
+  height: 100px;
+  text-align: left;
+  position: relative;
+}
+
+.sbb-logo {
+  height: 100px;
+  text-align: right;
+  position: relative;
+}
+
+.infotrans-logo img {
+  margin: 0;
+  position: absolute;
+  top: 25px;
+  left: 15px;
+  display: block;
+
+  max-width: 193px;
+  width: 100%;
+}
+
+
+.sbb-logo img {
+  margin: 0;
+  position: absolute;
+  bottom: 39px;
+  right: 15px;
+  display: block;
+
+  max-width: 257px;
+  width: 100%;
+}
+
+
+
+.tabs-left {
+  border: none;
+  padding-top: 0px;
+}
+
+.tabs-left>li {
+  float: none;
+  margin-bottom: 1px;
+   background: url('images/button.png');
+  background-size: 100% 100%;
+
+  height: 70px;
+}
+.tabs-left>li {
+  margin-right: 0px;
+}
+
+.tabs-left>li.active {
+  background: none;
+}
+
+.tabs-left>li.active>a,
+.tabs-left>li.active>a:hover,
+.tabs-left>li.active>a:focus,
+.tabs-left>li>a:hover,
+.tabs-left>li>a:focus {
+  background: rgba(255,255,255,0.11);
+  border: none;
+  color: #fff;
+
+
+}
+
+.tabs-left>li>a:hover,
+.tabs-left>li>a:focus {
+  background: rgba(255,255,255,0.5);
+  border: none;
+  color: black;
+
+}
+
+
+
+.tabs-left>li>a {
+
+  border: none;
+  color: white;
+  border-radius: 4px 0 0 4px;
+  margin-right: 0;
+  display:block;
+
+  height: 100%;
+  line-height: 50px;
+
+  font-size: 1.75rem;
+  padding-left: 52px;
+}
+@media (max-width:767px) {
+  .tabs-left>li>a {
+font-size: 0;
+}
+
+}
+
+.main-view {
+  background: rgba(255,255,255,0.11);
+  min-height: 520px;
+  padding-top: 12px;
+  padding-left: 2rem;
+
+  color: white;
+
+
+  border-radius: 0px 5px 5px 5px;
+  margin-left: -15px;
+  margin-right: -15px;
+}
+
+
+.icon {
+  height: 32px;
+  width: 32px;
+
+  display: block;
+  position: absolute;
+  top: 18px;
+  left: 10px;
+
+  background-image: url('images/home.png');
+  background-size: 100% 100%;
+}
+
+.diag {
+  background-image: url('images/diag.png');
+}
+
+.power {
+  background-image: url('images/power.png');
+}
+
+.schedule {
+  background-image: url('images/schedule.png');
+}
+
+.signals {
+  background-image: url('images/trends.png');
+}
+
+.ups {
+  background-image: url('images/ups.png');
+}
+
+.odo {
+  background-image: url('images/odo.png');
+}
+
+.settings {
+  background-image: url('images/settings.png');
+}
+
+.logout {
+  background-image: url('images/logout.png');
+}
+
+
+.alarms {
+  background-image: url('images/alarms.png');
+}
+
+.alarms_on {
+  background-image: url('images/alarms_on.png') !important;
+}
+
+
+.main-view h3 {
+  font-size: 1.25em;
+
+  margin: 0;
+  //padding: 3px 7px;
+
+  //background: rgba(0,0,0,0.2);
+  border-radius: 5px;
+
+  margin-bottom: 5px;
+  margin-left: 2px;
+}
+
+.main-view ul.diag {
+  margin: 0 -7px;
+  padding: 3px 7px;
+  background: rgba(0,0,0,0.2);
+  border-radius: 5px;
+  box-shadow: inset 1px 1px 3px rgba(0,0,0,0.4);
+  list-style: none;
+  margin-bottom: 11px;
+}
+
+.main-view ul.diag li {
+  list-style: none;
+}
+.main-view ul.diag li .right {
+  float: right;
+  font-weight: bold;
+}
+
+.state-on {
+    color: #0f0;
+}
+
+.state-off {
+  color: #77d;
+}
+
+.state-error {
+  color: #f00;
+}
+
+.state-na {
+  color: #444 !important;
+}
+
+.state-wait {
+  color: #ff0 !important;
+}
+
+
+.ajax-loading {
+  height: 32px;
+  width: 32px;
+  margin: 0 auto;
+  float: left;
+  position: absolute;
+  left: -40px;
+  top:1px;
+}
+
+.ajax-loading img {
+  width: 100%;
+
+}
+
+
+
+.language button {
+  height: 42px;
+  width: 42px;
+  display: block;
+  border: none;
+  float: left;
+  margin-top: 30px;
+  margin-right: 15px;
+}
+
+.german {
+  background: url('images/ger.png') center center no-repeat;
+}
+
+.english {
+  background: url('images/eng.png') center center no-repeat;
+}
+
+input.ng-invalid {
+    background-color: red;
+    color: white;
+}
+
+td.planned {
+  background: #449;
+  background: rgba(64,64,144,0.5);
+  font-weight: bold;
+}
+
+td.done {
+  background: #0C0;
+  background: rgba(0,192,0,0.5);
+}
+
+td.error {
+  background: #F00;
+  background: rgba(255,0,0,0.9);
+  color: white;
+}
+
+td.manual {
+  background: #aaa;
+  background: rgba(160,160,160,0.5);
+}
+
+td.run {
+  background: #FF0;
+  background: rgba(255,255,0,0.6);
+  color: black;
+  font-weight: bold;
+}
+
+td.late {
+  background: rgba(255,50,0,0.7);
+  background: #F50;
+}
+
+
+
+.scheduler td, .scheduler th {
+  vertical-align: middle !important;
+  text-align: center;
+}
+
+.newTask-date {
+  color: black;
+  font-weight: bold;
+}

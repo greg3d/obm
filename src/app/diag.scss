@@ -1,0 +1,122 @@
+.hide {
+	display: none;
+}
+
+.val {
+	font-weight: bold;
+	color: yellow;
+}
+
+#tree-root ul {
+		list-style: none;
+}
+
+ul#tree-root {
+		list-style: none;
+		margin: 0;
+		padding: 0;
+
+		font-size: 1.0em;
+}
+
+#tree-root > li > ul > li > ul{
+		list-style: none;
+		font-size: 1em !important;
+}
+
+#tree-root a {
+	text-decoration: none !important;
+
+
+
+
+}
+
+.open-tree {
+	width: 1.0em;
+	height: 1.0em;
+	border: 1px solid #777;
+	float: left;
+	display: block;
+
+	border-radius: 3px;
+	margin-right: 5px;
+	position: relative;
+	top: 2px;
+
+	font-weight: bold;
+	padding: 0;
+	color: white;
+	line-height: 1.0em;
+	text-align: center;
+
+	cursor: pointer;
+}
+
+.collapsed {
+	background: #05a;
+	border-color: #fff;
+}
+
+.open-tree + ul {
+	display: block;
+}
+
+.open-tree.collapsed + a + ul {
+	display: none;
+
+}
+.open-tree.collapsed + ul {
+	display: none;
+}
+
+
+.on-table > li {
+	display: block !important;
+	float: right;
+	top: 0px;
+	right: 0px;
+	width: 100px;
+	height: 100px;
+}
+
+.table1 {
+
+ position: relative;
+ font-size: 1.2em;
+}
+
+.table1 .item {
+	
+	float: left;
+	background: rgba(0,0,0,0.4);
+	padding: 5px;
+	margin: 5px;
+	border-radius: 5px;
+}
+
+.table1 .item > .nodeTitle {
+	font-size: 1.5em;
+}
+
+.table1 .clearAll {
+	position: absolute;
+	top: 0;
+	right: 20px;
+	padding: 5px 3px;
+	border: 1px solid black;
+	border-radius: 3px;
+	background: red;
+	color: white;
+	font-weight: bold;
+	width: 20px;
+	height: 20px;
+	line-height: 20px;
+
+}
+
+.pin, .clearAll {
+	cursor: pointer;
+
+}
+

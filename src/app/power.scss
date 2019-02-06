@@ -1,0 +1,28 @@
+.module .title {
+	font-size: 125%;
+}
+
+.module .title .ident {
+	color: #777;
+	font-size: 100%;
+}
+.module {
+	margin-bottom: 5px;
+	margin-top: 5px;
+	background-color: rgba(0,0,0,0.5);
+	padding: 5px 0;
+	border-radius:5px;
+	margin-right: 5px;
+}
+
+.module .value {
+	font-size: 155%;
+	font-weight: bold;
+	color: yellow;
+}
+
+.buttons {
+	text-align: right;
+	display: 'table-cell';
+	vertical-align: center;
+}
