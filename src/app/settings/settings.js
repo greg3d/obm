@@ -37,6 +37,11 @@
                 var req = JSON.stringify({"action": "get","type": "settings"});
                 IntServ.PostRequest(req).then(function(resp){
                     var tempSets = resp.data.settings;
+                    //console.log(tempSets);
+                    if (tempSets === null || tempSets === undefined) {
+                        console.log('Settings returned undefined');
+                        return;
+                    }
                     //console.log('sets');
                     s.settings = tempSets;
                     var keys = Object.keys(tempSets);

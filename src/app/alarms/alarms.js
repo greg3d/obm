@@ -38,13 +38,19 @@
 
 		function AlarmService($rootScope){
 
-			//this.hasNew = false;
-			this.last = "0";
-			this.num = 0;
-			this.hasNew = false;
+			
+			this._list = [];
 
-			//this.get
-			//this.idList = [];
+			this.addNew = function(sensor,max,min){
+				//console.log(sensor);
+				if (sensor.value[0]<min) {
+					$rootScope.$broadcast('warning',{
+						"name": sensor.title,
+						"value": sensor.value[0],
+						"type": "lower"
+					});
+				}
+			}
 
 			this.getIdList = function(){
 				var idList = Object.keys($rootScope.alarms);

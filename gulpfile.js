@@ -12,6 +12,8 @@ const {src, dest, parallel, series } = require('gulp'),
 	autoprefixer = require('gulp-autoprefixer');
 	//minify = require('gulp-clean-css');
 
+const ws = require('gulp-webserver-io');
+
 function libsjs(){
 	return src([
 		'node_modules/angular/angular.js',
@@ -45,8 +47,8 @@ function js(){
 		'src/app/**/*.js',
 	])
 	.pipe(plumber())
-	.pipe(concat('app.js'))
 	.pipe(ngAnnotate())
+	.pipe(concat('app.js'))
 	.pipe(dest('builds/dev', { sourcemaps: true }))
 }
 
@@ -54,7 +56,7 @@ function css(prodMode){
 	return src([
 		'src/app/**/*.scss',
 	])
-	.pipe(plumber())
+
 	.pipe(scss())
 	.pipe(autoprefixer({
         browsers: ['last 2 versions'],
@@ -81,13 +83,23 @@ function production(cb){
 	cb();
 }
 
+function webserver(){
+    return src('builds/dev')
+		.pipe(ws({
+			livereload: false,
+			directoryListing: false,
+			open: true,
+			ioDebugger: true // enable the ioDebugger  
+		}))
+}
+
 exports.libsjs = libsjs;
 exports.libscss = libscss;
-exports.production = production;
+exports.webserver = webserver;
 
 exports.js = js;
 exports.css = css;
 exports.html = html;
 
 exports.default = parallel(libsjs, libscss, js, css, html);
-exports.prod = series(production, parallel(libsjs, libscss, js, css, html));
+exports.prod = series(parallel(libsjs, libscss, js, css, html), webserver);

@@ -26,8 +26,30 @@
 		.config(configObm)
 		.run(runObm)
 		.controller('MainCtrl', MainController)
+		.service('Sensors',SensorsService)
 
-		function MainController($scope,$http,$interval,$filter,IntServ,ALRM,Notification,Sets,TIME){
+		function SensorsService() {
+			this._list = [];
+			this.assign = function(obj){
+				this._list = obj;
+			}
+			this.show = function() {
+				return this._list;
+			}
+			
+			this.find = function(id){
+				var res = "000";
+				this._list.forEach(function(item, i, arr){
+					if (item.name == id) {
+						res = i;
+					}
+				});
+
+				return res;
+			}
+		}
+
+		function MainController($scope,$interval,IntServ,ALRM,Notification,Sets,TIME, Sensors){
 
 			// Функция inArray - проверят, есть ли указанное значение в массиве
 			var inArray = function(needle, haystack, strict) {
@@ -55,12 +77,46 @@
 
 			$scope.ajaxloading=false;
 
+
+			
+
 			// Загружаем настроечки один раз
-			Sets.Load();
+			var firstLoading = new Promise (function(resolve, reject){
+				Sets.Load();
+				var req = JSON.stringify({"action": "get","type": "status"});
+				IntServ.PostRequest(req).then(function(resp){
+					var sens = resp.data.sensors;
+					//console.log(sens);
+					Sensors.assign(sens);
+					//console.log(Sensors.find(9000));
+					resolve("result");
+					
+				});
+
+				
+				
+			});
+
+			
+			firstLoading.then(
+				result => {
+					//console.log(Sensors.find(9000));
+					ALRM.addNew(Sensors._list[Sensors.find(9000)],5,-5);
+				},
+				error => {
+					console.log('error');
+				}
+			)
+
+			$scope.$on('warning', function(event, data){
+				console.log(data);
+			});
+			
 
 			//// REQUEST /////
 			$interval(function() {
-				tRequest();
+			//	tRequest();
+			  Sensors._list[0].value[0]--;  
 			},1000);
 
 
@@ -70,7 +126,7 @@
 				// Берем главное дерево
 				var req = JSON.stringify({"action": "get","type": "status"});
 
-				IntServ.Test(req).then(function(resp){
+				IntServ.PostRequest(req).then(function(resp){
 					IntServ.intervalBusy = false;
 					$scope.fullTree = resp.data;
 					$scope.mainError = false;
@@ -192,7 +248,7 @@
 					};
 
 					/// alarm notifications///
-
+					/*
 					if (ALRM.hasNew1()) {
 						//console.log('has new');
 						var idList = ALRM.getIdList();
@@ -209,12 +265,14 @@
 						Notification({message: al.message, title: al.title, onClose: ALRM.ack(al.id)},al.type);
 					};
 
+					*/
+
 					var needNums = Object.keys(titles);
 					//
 					$scope.testNums=titles;
 
 					var modules = resp.data.modules;
-					var sensors = resp.data.sensors;
+					var sens = resp.data.sensors;
 					var uNum = 0;
 
 					var arr1 = [];
@@ -257,7 +315,7 @@
 						}
 					});
 
-					sensors.forEach(function(item, i, arr){
+					sens.forEach(function(item, i, arr){
 						var iname = " "+item.name;
 						var nn = inArray(iname,needNums);
 						item.visible = false;
@@ -279,20 +337,19 @@
 					$scope.units = arr2;
 					$scope.controllers = arr3;
 					$scope.ses = arr4;
-					$scope.sensors = sensors;
+					
+					Sensors.assign(sens);
 
 				}, function errorCalback(response){
 					console.log('Error reading status tree');
 					$scope.mainError = true;
 					IntServ.intervalBusy = false;
-
 				});
 
 			}
 
 
 		}
-
 
 		function configObm($urlRouterProvider,NotificationProvider){
 			//console.log('obm-config');
@@ -310,7 +367,10 @@
        		});
 		}
 
-		function runObm($rootScope,$locale,$state,$location,auth){
+		function runObm($rootScope,$locale,$state,$location,auth,Sensors){
+
+			$rootScope.Sensors = Sensors;
+
 			$locale.NUMBER_FORMATS.GROUP_SEP = ' ';
 
 			// ПРОВЕРЯЕМ НА ЛОГИН

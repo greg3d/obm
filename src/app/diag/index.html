@@ -26,10 +26,9 @@
 	  </div>
 	</div>
 </div>
-<pre>{{ IntServ.intervalBusy }}</pre>
-<pre>{{fullTree | json}}</pre>
-<pre>{{ alarms | json }}</pre>
-<pre>{{session.getUser() | json }} {{auth.isLoggedIn() | json }}</pre>
+
+<pre>{{ Sensors.show() }}</pre>
+<pre>{{ fullTree | json }}</pre>
 <pre>{{ Sets.settings | json }}</pre>
 
 <!--nodes_renderer-->

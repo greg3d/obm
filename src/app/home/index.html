@@ -117,7 +117,7 @@
 	<div class="col-xs-12 col-sm-12 col-md-4 col-lg-3">
 		<h3 class="pos-sys">{{ 'Sensors' | translate }}</h3>
 		<ul class="diag">
-			<li ng-repeat="item in sensors | filter: {visible:true}" ng-include="'sensors_row.html'"></li>
+			<li ng-repeat="item in Sensors.show() | filter: {visible:true}" ng-include="'sensors_row.html'"></li>
 		</ul>
 	</div>
 </div>
