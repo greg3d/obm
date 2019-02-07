@@ -10,10 +10,10 @@
 		.config(configAlarms)
 		.run(runAlarms)
 		.service('ALRM', AlarmService)
-		.filter('renderBool', renderBoolFun)
-		.filter('onlyActive', onlyActiveFun)
+	//		.filter('renderBool', renderBoolFun)
+	//		.filter('onlyActive', onlyActiveFun)
 
-	function onlyActiveFun() {
+	/*function onlyActiveFun() {
 		return function (items) {
 			var result = {};
 			angular.forEach(items, function (value, key) {
@@ -23,9 +23,9 @@
 			});
 			return result;
 		};
-	}
+	}*/
 
-	function renderBoolFun() {
+	/*function renderBoolFun() {
 		return function (input) {
 			var out = 0;
 			if (input == true) {
@@ -35,41 +35,91 @@
 			}
 			return out;
 		}
-	}
+	}*/
 
-	function AlarmService($rootScope) {
+	function AlarmService($rootScope, Sensors) {
+
+		this._messages = [
+			"Message 1",
+			"Message 2",
+			"Message 3",
+			"Message 4",
+			"Message 5",
+			"Message 6",
+			"Message 7",
+			"Message 8",
+			"Message 9"
+		];
 
 		this._list = [];
 		this._num = 0;
+		this._lastId = 0;
+
+		this.getList = function(){
+			return this._list;
+		}
 
 		this.addNew = function (sensor, max, min, type) {
 
 			this._list.push({
-				"sensor": sensor,
+				"id": this._lastId,
+				"sensorId": sensor,
 				"max": max,
 				"min": min,
 				"type": type,
-				"active": false
+				"active": false,
+				"ack": false,
+				"message": "Test"
 			});
+
+			this._lastId++;
 		}
 
 		this.check = function () {
-			this._num = 0;
-
+			var _num = 0;
+			
 			this._list.forEach(function (item, i, arr) {
-				var val = item.sensor.value[0];
+				var s = Sensors.show()[item.sensorId];
+				var val = s.value[0];
+				var bcast = true;
+
+				if (item.active == true) {
+					bcast = false;
+				}
+				var text = " ";
 				if (val < item.min) {
+					text = "lower";
+					//console.log(val);
 					item.active = true;
-					this._num++;
-					$rootScope.$broadcast('warning', {
-						"name": item.sensor.title,
-						"value": val,
-						"type": "lower"
-					});
+					_num++;
 				} else {
-					item.active = false;
+					if (val > item.max) {
+						text = "higher";
+						//console.log(val);
+						item.active = true;
+						_num++;
+					} else {
+						item.active = false;
+					}
+				}
+
+				item.message = "Value of " + s.title + " is " + text + " than threshold!";
+				
+
+				if (item.active == true && bcast == true) {
+					
+					$rootScope.$broadcast('alarm', {
+						"alarm": item,
+						"title": item.type
+					});
 				}
 			});
+
+			this._num = _num;
+		}
+
+		this.getNum = function () {
+			return this._num;
 		}
 
 	}

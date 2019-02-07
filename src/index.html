@@ -23,7 +23,7 @@
  <div class="container">
 	<div class="row">
 		<div class="hidden-xs col-sm-3 infotrans-logo"><img src="images/infotrans.png"></div>
-		<div class="col-sm-6 col-xs-12 heading"><h1>{{'MAIN_TITLE' | translate }} <span class="version">v0.7.5.0 <span ng-show="auth.isLoggedIn()">Logged as <b>{{ session.getUser().name }}</b></span></span></h1></div>
+		<div class="col-sm-6 col-xs-12 heading"><h1>{{'MAIN_TITLE' | translate }} <span class="version">v0.9.0.0 <span ng-show="auth.isLoggedIn()">Logged as <b>{{ session.getUser().name }}</b></span></span></h1></div>
 		<div class="hidden-xs col-sm-3 sbb-logo">
       <img src="images/sbb.png" >
 
@@ -51,7 +51,7 @@
         <li ui-sref-active="active"><a ui-sref="diag"><span class="icon diag"> </span>{{ 'diagnosticsButton' | translate }}</a></li>
         <li ui-sref-active="active"><a ui-sref="schedule"><span class="icon schedule"> </span>{{ 'Scheduler' | translate }}</a></li>
         <li ui-sref-active="active"><a ui-sref="trends"><span class="icon signals"> </span>{{ 'signalsButton' | translate }}</a></li>
-        <li ui-sref-active="active"><a ui-sref="alarms"><span class="icon alarms" ng-class="{'alarms_on':ALRM.number()>0}"> </span>{{ '_alarms' | translate }} ({{ ALRM.number() }})</a></li>
+        <li ui-sref-active="active"><a ui-sref="alarms"><span class="icon alarms" ng-class="{'alarms_on':ALRM.getNum()>0}"> </span>{{ '_alarms' | translate }} ({{ ALRM.getNum() }})</a></li>
         <li ui-sref-active="active"><a ui-sref="settings"><span class="icon settings"> </span>{{ 'Settings' | translate }}</a></li>
         <li ng-if="auth.isLoggedIn()"><a href="#" ng-click="auth.logOut()"><span class="icon logout"> </span>logout</a></li>
       </ul>

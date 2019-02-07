@@ -9,12 +9,12 @@
                     <th>Message</th>
                 </tr>
             </thead>
-            <tbody ng-repeat="(index,value) in alarms | onlyActive ">
+            <tbody ng-repeat="(index,value) in ALRM.getList()">
                 <tr ng-class="{'error': value.type=='error',
                     'warning': value.type=='warning'}">
                     <td>{{ index }}</td>
-                    <td>{{ alarms[index].title | translate }}</td>
-                    <td>{{ alarms[index].message | translate }}</td>
+                    <td>{{ value.sensor.title | translate }}</td>
+                    <td>{{ value.message | translate }}</td>
                 </tr>
             </tbody>
 

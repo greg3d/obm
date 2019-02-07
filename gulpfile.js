@@ -51,8 +51,9 @@ function js() {
 	return src([
 			'src/app/**/*.js',
 		])
-		.pipe(plumber())
+		
 		.pipe(ngAnnotate())
+		.pipe(plumber())
 		.pipe(concat('app.js'))
 		.pipe(dest('builds/dev', {
 			sourcemaps: true
@@ -108,5 +109,5 @@ exports.js = js;
 exports.css = css;
 exports.html = html;
 
-exports.default = parallel(libsjs, libscss, js, css, html);
+exports.default = series(libsjs, libscss, js, css, html);
 exports.prod = series(parallel(libsjs, libscss, js, css, html), webserver);

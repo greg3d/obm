@@ -10,7 +10,7 @@
 			'ngAnimate',
 			'obm.intouch',
 			'obm.settings',
-			//		'obm.users',
+			//	'obm.users',
 			'obm.home',
 			'obm.diag',
 			'obm.alarms',
@@ -192,20 +192,23 @@
 			IntServ.PostRequest(req).then(function (resp) {
 				var sens = resp.data.sensors;
 				Sensors.prepare(sens, needNums, titles);
-				setTimeout(function () {
+				//setTimeout(function () {
 					resolve("result");
-				}, 500);
+				//}, 500);
 			});
 		});
 
 		firstLoading.then(
 			result => {
-				ALRM.addNew(Sensors._list[Sensors.find(9000)], 5, -5);
+				ALRM.addNew(Sensors.find(9000), 5, -5,'warning');
 
+				var tt = 0;
 				//// REQUEST /////
 				$interval(function () {
 					tRequest();
-					Sensors._list[0].value[0]=Sensors._list[0].value[0]-6;
+					//tt++;
+					//Sensors._list[0].value[0] = 15 - tt;
+					//console.log(tt);
 					ALRM.check();
 				}, 1000);
 
@@ -215,8 +218,9 @@
 			}
 		)
 
-		$scope.$on('warning', function (event, data) {
+		$scope.$on('alarm', function (event, data) {
 			console.log(data);
+			Notification({message: data.alarm.message, title: data.title}, data.alarm.type);
 		});
 
 		// req function
