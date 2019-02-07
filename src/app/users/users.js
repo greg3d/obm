@@ -1,4 +1,5 @@
-;(function(){
+;
+(function () {
 	'use scrict';
 
 	angular
@@ -8,14 +9,14 @@
 
 		.config(configUsers)
 
-		function configUsers($stateProvider){
-			var mName = 'users';
+	function configUsers($stateProvider) {
+		var mName = 'users';
 
-			$stateProvider.state(mName, {
-				url: '/' + mName,
-				templateUrl: 'app/' + mName + '/index.html',
-			});
-		}
+		$stateProvider.state(mName, {
+			url: '/' + mName,
+			templateUrl: 'app/' + mName + '/index.html',
+		});
+	}
 
 
 })();

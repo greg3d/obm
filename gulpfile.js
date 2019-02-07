@@ -2,7 +2,12 @@
 
 var prodMode = false;
 
-const {src, dest, parallel, series } = require('gulp'),
+const {
+	src,
+	dest,
+	parallel,
+	series
+} = require('gulp'),
 	concat = require('gulp-concat'),
 	scss = require('gulp-sass'),
 	//uglify = require('gulp-uglify'),
@@ -10,81 +15,83 @@ const {src, dest, parallel, series } = require('gulp'),
 	ngAnnotate = require('gulp-ng-annotate'),
 	//ngmin = require('gulp-ngmin'),
 	autoprefixer = require('gulp-autoprefixer');
-	//minify = require('gulp-clean-css');
+//minify = require('gulp-clean-css');
 
 const ws = require('gulp-webserver-io');
 
-function libsjs(){
+function libsjs() {
 	return src([
-		'node_modules/angular/angular.js',
-		'node_modules/angular-ui-router/release/angular-ui-router.js',
-		'node_modules/angular-animate/angular-animate.js',
-		'node_modules/angular-touch/angular-touch.js',
-		'node_modules/angular-ui-notification/dist/angular-ui-notification.js',
-		'node_modules/angular-translate/dist/angular-translate.min.js',
-		'node_modules/angular-ui-bootstrap/dist/ui-bootstrap.js',
-		'node_modules/angular-ui-bootstrap/dist/ui-bootstrap-tpls.js',
-		'node_modules/chart.js/dist/Chart.js',
-		'node_modules/angular-chart.js/dist/angular-chart.js'
-	])
-	.pipe(concat('libs.js'))
-	.pipe(dest('builds/dev'))
+			'node_modules/angular/angular.js',
+			'node_modules/angular-ui-router/release/angular-ui-router.js',
+			'node_modules/angular-animate/angular-animate.js',
+			'node_modules/angular-touch/angular-touch.js',
+			'node_modules/angular-ui-notification/dist/angular-ui-notification.js',
+			'node_modules/angular-translate/dist/angular-translate.min.js',
+			'node_modules/angular-ui-bootstrap/dist/ui-bootstrap.js',
+			'node_modules/angular-ui-bootstrap/dist/ui-bootstrap-tpls.js',
+			'node_modules/chart.js/dist/Chart.js',
+			'node_modules/angular-chart.js/dist/angular-chart.js'
+		])
+		.pipe(concat('libs.js'))
+		.pipe(dest('builds/dev'))
 }
 
-function libscss(){
+function libscss() {
 	return src([
-		'node_modules/bootstrap/dist/css/bootstrap.css',
-		'node_modules/angular/angular-csp.css',
-		'node_modules/angular-ui-bootstrap/dist/ui-bootstrap-csp.css',
-		'node_modules/angular-ui-notification/dist/angular-ui-notification.css'
-	])
-	.pipe(concat('libs.css'))
-	.pipe(dest('builds/dev'))
+			'node_modules/bootstrap/dist/css/bootstrap.css',
+			'node_modules/angular/angular-csp.css',
+			'node_modules/angular-ui-bootstrap/dist/ui-bootstrap-csp.css',
+			'node_modules/angular-ui-notification/dist/angular-ui-notification.css'
+		])
+		.pipe(concat('libs.css'))
+		.pipe(dest('builds/dev'))
 }
 
-function js(){
+function js() {
 	return src([
-		'src/app/**/*.js',
-	])
-	.pipe(plumber())
-	.pipe(ngAnnotate())
-	.pipe(concat('app.js'))
-	.pipe(dest('builds/dev', { sourcemaps: true }))
+			'src/app/**/*.js',
+		])
+		.pipe(plumber())
+		.pipe(ngAnnotate())
+		.pipe(concat('app.js'))
+		.pipe(dest('builds/dev', {
+			sourcemaps: true
+		}))
 }
 
-function css(prodMode){
+function css(prodMode) {
 	return src([
-		'src/app/**/*.scss',
-	])
+			'src/app/**/*.scss',
+		])
 
-	.pipe(scss())
-	.pipe(autoprefixer({
-        browsers: ['last 2 versions'],
-        cascade: false
-	}))
-	.pipe(concat('app.css'))
-	.pipe(dest('builds/dev'))
+		.pipe(scss())
+		.pipe(autoprefixer({
+			browsers: ['last 2 versions'],
+			cascade: false
+		}))
+		.pipe(concat('app.css'))
+		.pipe(dest('builds/dev'))
 }
 
-function html(){
+function html() {
 	return src([
-		'src/*.html',
-		'src/**/*.html',
-		'src/images*/*',
-		'src/fonts*/*',
-		'src/*.json'
-	])
-	.pipe(dest('builds/dev'))
+			'src/*.html',
+			'src/**/*.html',
+			'src/images*/*',
+			'src/fonts*/*',
+			'src/*.json'
+		])
+		.pipe(dest('builds/dev'))
 }
 
-function production(cb){
-	
+function production(cb) {
+
 	prodMode = true;
 	cb();
 }
 
-function webserver(){
-    return src('builds/dev')
+function webserver() {
+	return src('builds/dev')
 		.pipe(ws({
 			livereload: false,
 			directoryListing: false,

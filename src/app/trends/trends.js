@@ -1,4 +1,5 @@
-;(function(){
+;
+(function () {
 	'use scrict';
 
 	angular
@@ -12,95 +13,95 @@
 		.controller('DbgCtrl', DebugController)
 		.run(runTrends)
 
-		function DebugController(IntServ,$interval){
+	function DebugController(IntServ, $interval) {
 
-			var dbc = this;
+		var dbc = this;
 
-			if (angular.isDefined(dbc.int1)){
+		if (angular.isDefined(dbc.int1)) {
 
-			} else {
-				dbc.int1 = undefined;
+		} else {
+			dbc.int1 = undefined;
+			dbc.num = 0;
+
+
+			dbc.dbgStatus = "response";
+
+			dbc.dbgUrl = 'readbufs';
+			dbc.dbgAction = 'get';
+			dbc.dbgType = 'readbufs';
+			dbc.dbgName = 'MWAY';
+
+
+			dbc.once = function once() {
 				dbc.num = 0;
+				dbc.stop();
 
+				var url = dbc.dbgUrl;
+				var action = dbc.dbgAction;
+				var type = dbc.dbgType;
+				var name = dbc.dbgName;
 
-				dbc.dbgStatus = "response";
+				var req = JSON.stringify({
+					"action": action,
+					"type": type,
+					"name": name
+				});
 
-				dbc.dbgUrl = 'readbufs';
-				dbc.dbgAction = 'get';
-				dbc.dbgType = 'readbufs';
-				dbc.dbgName = 'MWAY';
+				IntServ.Custom(url, req).then(function (response) {
+					dbc.dbgStatus = response.data;
+				}, function () {
+					dbc.dbgStatus = "Какая-то ошибочка. Вернулся плохой или пустой ответ. Или не вернулся вообще.";
+				});
+			}
 
+			dbc.interval = function interval() {
+				dbc.num = 0;
+				dbc.stop();
 
-				dbc.once = function once(){
-					dbc.num = 0;
-					dbc.stop();
+				var url = dbc.dbgUrl;
+				var action = dbc.dbgAction;
+				var type = dbc.dbgType;
+				var name = dbc.dbgName;
 
-					var url = dbc.dbgUrl;
-					var action = dbc.dbgAction;
-					var type = dbc.dbgType;
-					var name = dbc.dbgName;
+				var req = JSON.stringify({
+					"action": action,
+					"type": type,
+					"name": name
+				});
 
-					var req = JSON.stringify({
-						"action": action,
-						"type": type,
-						"name": name
-					});
-
-					IntServ.Custom(url,req).then(function(response){
+				dbc.int1 = $interval(function () {
+					dbc.num = dbc.num + 1;
+					IntServ.Custom(url, req).then(function (response) {
 						dbc.dbgStatus = response.data;
-					},function(){
+					}, function () {
 						dbc.dbgStatus = "Какая-то ошибочка. Вернулся плохой или пустой ответ. Или не вернулся вообще.";
 					});
+
+
+
+				}, 1000);
+
+			}
+
+			dbc.stop = function stop() {
+				if (angular.isDefined(dbc.int1)) {
+
+					console.log(dbc.int1);
+
+					$interval.cancel(dbc.int1);
+					dbc.int1 = undefined;
 				}
-
-				dbc.interval = function interval(){
-					dbc.num = 0;
-					dbc.stop();
-
-					var url = dbc.dbgUrl;
-					var action = dbc.dbgAction;
-					var type = dbc.dbgType;
-					var name = dbc.dbgName;
-
-					var req = JSON.stringify({
-						"action": action,
-						"type": type,
-						"name": name
-					});
-
-					dbc.int1 = $interval(function() {
-						dbc.num=dbc.num+1;
-			            IntServ.Custom(url,req).then(function(response){
-							dbc.dbgStatus = response.data;
-						},function(){
-							dbc.dbgStatus = "Какая-то ошибочка. Вернулся плохой или пустой ответ. Или не вернулся вообще.";
-						});
-
-
-
-			          }, 1000);
-
-				}
-
-				dbc.stop = function stop(){
-					if (angular.isDefined(dbc.int1)) {
-
-						console.log(dbc.int1);
-
-			            $interval.cancel(dbc.int1);
-			            dbc.int1 = undefined;
-			        }
-				}
-
-
 			}
 
 
 		}
 
-		function LineController($scope){
 
-		  		/*
+	}
+
+	function LineController($scope) {
+
+		/*
 
 				Chart.defaults.global.animation.easing = 'linear';
 				Chart.defaults.global.animation.duration = 0;
@@ -134,26 +135,28 @@
 		      ]
 		    }
 		  };*/
-		}
+	}
 
-		function configTrends($stateProvider,ChartJsProvider){
-			var mName = 'trends';
-			ChartJsProvider.setOptions({ colors : [ '#000000', '#000000'] });
+	function configTrends($stateProvider, ChartJsProvider) {
+		var mName = 'trends';
+		ChartJsProvider.setOptions({
+			colors: ['#000000', '#000000']
+		});
 
-			$stateProvider.state(mName, {
-				url: '/' + mName,
-				templateUrl: 'app/' + mName + '/index.html',
-				controller: 'DbgCtrl',
-				controllerAs: 'dbc'
-			});
-		}
+		$stateProvider.state(mName, {
+			url: '/' + mName,
+			templateUrl: 'app/' + mName + '/index.html',
+			controller: 'DbgCtrl',
+			controllerAs: 'dbc'
+		});
+	}
 
-		function runTrends($rootScope,$locale,$state,$location){
-			/*$rootScope.$on('$locationChangeStart', function(event,toState,toParams,fromState,fromParams,options){
+	function runTrends($rootScope, $locale, $state, $location) {
+		/*$rootScope.$on('$locationChangeStart', function(event,toState,toParams,fromState,fromParams,options){
 
 
-			});*/
-		}
+		});*/
+	}
 
 
 })();
