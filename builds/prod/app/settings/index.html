@@ -1,0 +1,63 @@
+<!--Содержимое блеадь-->
+<script type="text/ng-template" id="settings_form_row">
+
+    <div style="clear:both" class="row">
+        <div class="col-xs-12"><h3 class="settings-category-title" ng-if="item.category!=result[$index-1].category"> {{ item.category }} </h3></div>
+    </div>
+    <div class="form-group" ng-hide="Sets.settings[item.name].admin && !auth.isAdmin()">
+
+        <label class="col-sm-7 control-label" for="{{ item.name }}" ng-class="{'admin':item.admin}">
+        {{ item.name | translate }}
+        <span class="maxmin" ng-if="(item.type=='int' || item.type=='double') && item.unit!='' "><span class="unit">({{ item.unit | translate }})</span> max: {{ item.max }}, min: {{ item.min }}</span>
+        <span style="color:red" ng-show="settingz.{{ item.name }}.$touched && settingz.{{ item.name }}.$invalid">Invalid</span>
+        </label>
+        <div class="col-sm-5">
+            <!-- int -->
+            <div ng-if="item.type=='int'">
+               <input class="form-control" name="{{ item.name }}" ng-model="Sets.settings[item.name].value" max="{{ item.max }}" min="{{ item.min }}" ng-required="true" num-validator />
+            </div>
+            <!-- double -->
+            <div ng-if="item.type=='double'">
+                <input class="form-control" name="{{ item.name }}" ng-model="Sets.settings[item.name].value" max="{{ item.max }}" min="{{ item.min }}" ng-required="true"  num-validator />
+            </div>
+            <!-- select -->
+            <div ng-if="item.type=='select'">
+                <div class="btn-group">
+                    <label ng-repeat="pos in Sets.settings[item.name].list" class="btn btn-default btn-sm" ng-model="Sets.settings[item.name].value" uib-btn-radio="$index">{{ pos }}</label>
+                </div>
+            </div>
+            <!-- bool -->
+            <div ng-if="item.type=='bool'">
+                <div class="btn-group">
+                    <label class="btn btn-default" ng-model="Sets.settings[item.name].value" uib-btn-radio="false" uncheckable>No</label>
+                    <label class="btn btn-default" ng-model="Sets.settings[item.name].value" uib-btn-radio="true" uncheckable>Yes</label>
+                </div>
+            </div>
+            <!-- text -->
+            <div ng-if="item.type=='text'">
+                <input type="text" class="form-control" ng-model="Sets.settings[item.name].value" required />
+            </div>
+        </div>
+    </div>
+</script>
+
+<div class="row" ng-controller="SetCtrl">
+    <div class="col-md-12 col-sm-12 col-lg-8 col-lg-offset-2">
+        <h2>{{ '_settings' | translate }}</h2>
+        <form name="settingz" ng-model="settingz">
+
+            <div ng-repeat="item in Sets.settingsKeys | orderBy:'category' as result" ng-include="'settings_form_row'">
+
+            </div>
+
+            <div style="clear:both"></div>
+            <button ng-click="Sets.Save()" type="submit"
+             ng-disabled="settingz.$dirty && settingz.$invalid"
+            class="btn btn-success btn-lg btn-block">{{ '_save' | translate }}</button>
+            <br/>
+        </form>
+
+    </div>
+
+</div>
+

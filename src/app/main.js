@@ -193,16 +193,16 @@
 				var sens = resp.data.sensors;
 				Sensors.prepare(sens, needNums, titles);
 				//setTimeout(function () {
-					resolve("result");
+				resolve("result");
 				//}, 500);
 			});
 		});
 
 		firstLoading.then(
-			result => {
-				ALRM.addNew(Sensors.find(9000), 5, -5,'warning');
+			function (result) {
+				ALRM.addNew(Sensors.find(9000), 5, -5, 'warning');
 
-				var tt = 0;
+				//var tt = 0;
 				//// REQUEST /////
 				$interval(function () {
 					tRequest();
@@ -213,14 +213,17 @@
 				}, 1000);
 
 			},
-			error => {
+			function (error) {
 				console.log('error');
 			}
 		)
 
 		$scope.$on('alarm', function (event, data) {
 			console.log(data);
-			Notification({message: data.alarm.message, title: data.title}, data.alarm.type);
+			Notification({
+				message: data.alarm.message,
+				title: data.title
+			}, data.alarm.type);
 		});
 
 		// req function

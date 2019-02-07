@@ -1,0 +1,7 @@
+{
+  "user": {
+    "name": "user",
+    "email": "user@mail.com"
+  },
+  "accessToken": "some-access-token"
+}

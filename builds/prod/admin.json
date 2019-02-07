@@ -1,0 +1,7 @@
+{
+  "user": {
+    "name": "admin",
+    "email": "admin@email.com"
+  },
+  "accessToken": "some-access-admin-token"
+}

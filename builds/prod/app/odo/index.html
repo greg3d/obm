@@ -1,0 +1,29 @@
+<!--ТЕЛО блеадь-->
+<div class="row" ng-controller="OdoCtrl">
+	<div class="col-md-12 col-sm-12 col-lg-8 col-lg-offset-2">
+
+			<h3>Emulator mode <b><span ng-if="fullTree.odometer.mode == 1">Emulator</span><span ng-if="fullTree.odometer.mode == 0">Normal</span></b></h3>
+			<div class="btn-group" role="group" aria-label="Odo1">
+			  <button type="button" class="btn btn-lg btn-default" ng-disabled="mode=='MR_MEASURE'" ng-click="odoEmul(1)">ON</button>
+			  <button type="button" class="btn btn-lg btn-default" ng-click="odoEmul(0)">OFF</button>
+			</div>
+ 			<hr>
+			<h3>Emulator speed <b><i>{{ fullTree.odometer.speed }} km/h</i></b></h3>
+			<div class="btn-group" role="group" aria-label="Odo2">
+			  <button type="button" class="btn btn-lg btn-default" ng-click="odoSpeedUp()">+</button>
+			  <button type="button" class="btn btn-lg btn-default" ng-click="odoSpeedDown()">-</button>
+			</div>
+			<hr>
+			<h3>Emulator direction <b><i>{{ fullTree.odometer.dir | direction }}</i></b></h3>
+			<div class="btn-group" role="group" aria-label="Odo3">
+			  <button type="button" class="btn btn-lg btn-default" ng-click="odoDir(1)">Forward</button>
+			  <button type="button" class="btn btn-lg btn-default" ng-click="odoDir(0)">Backward</button>
+			</div>
+			<hr>
+			<div class="jumbotron warning">
+			  <h1>WARNING!</h1>
+			  <p>Using Emulator for real measurements could cause serious problems! Use only for testing and at your own risk! Don't forget to switch off Emulator after testing.</p>
+
+			</div>
+	</div>
+</div>

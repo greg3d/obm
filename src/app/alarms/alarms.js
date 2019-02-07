@@ -55,7 +55,7 @@
 		this._num = 0;
 		this._lastId = 0;
 
-		this.getList = function(){
+		this.getList = function () {
 			return this._list;
 		}
 
@@ -77,7 +77,7 @@
 
 		this.check = function () {
 			var _num = 0;
-			
+
 			this._list.forEach(function (item, i, arr) {
 				var s = Sensors.show()[item.sensorId];
 				var val = s.value[0];
@@ -104,10 +104,10 @@
 				}
 
 				item.message = "Value of " + s.title + " is " + text + " than threshold!";
-				
+
 
 				if (item.active == true && bcast == true) {
-					
+
 					$rootScope.$broadcast('alarm', {
 						"alarm": item,
 						"title": item.type
