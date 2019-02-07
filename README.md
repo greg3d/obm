@@ -11,3 +11,8 @@ npm install
 gulp
 ```
 
+Сборка prod:
+```
+gulp prod
+```
+
