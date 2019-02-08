@@ -37,7 +37,7 @@
 		}
 	}*/
 
-	function AlarmService($rootScope, Sensors) {
+	function AlarmService($rootScope, Sensors, Modules) {
 
 		this._messages = [
 			"Message 1",
@@ -51,19 +51,36 @@
 			"Message 9"
 		];
 
-		this._list = [];
-		this._num = 0;
-		this._lastId = 0;
+		var _list = [];
+		var _num = 0;
+		var _lastId = 0;
 
 		this.getList = function () {
-			return this._list;
+			return _list;
+		}
+
+		this.addPack = function (arr) {
+			arr.forEach(function (item, i, arr) {
+				//console.log(item.name);
+				_list.push({
+					"id": _lastId,
+					"sensorId": i,
+					"max": 'ERROR',
+					"min": 'ERROR',
+					"type": 'error',
+					"active": false,
+					"ack": false,
+					"message": item.title + " is in ERROR State!"
+				});
+				_lastId++;
+			})
 		}
 
 		this.addNew = function (sensor, max, min, type) {
-
-			this._list.push({
-				"id": this._lastId,
-				"sensorId": sensor,
+			var sensorId = Sensors.find(sensor);
+			_list.push({
+				"id": _lastId,
+				"sensorId": sensorId,
 				"max": max,
 				"min": min,
 				"type": type,
@@ -71,43 +88,72 @@
 				"ack": false,
 				"message": "Test"
 			});
-
-			this._lastId++;
+			_lastId++;
 		}
 
 		this.check = function () {
-			var _num = 0;
+			_num = 0;
 
-			this._list.forEach(function (item, i, arr) {
-				var s = Sensors.show()[item.sensorId];
-				var val = s.value[0];
-				var bcast = true;
+			_list.forEach(function (item, i, arr) {
 
-				if (item.active == true) {
-					bcast = false;
-				}
-				var text = " ";
-				if (val < item.min) {
-					text = "lower";
-					//console.log(val);
-					item.active = true;
-					_num++;
-				} else {
-					if (val > item.max) {
-						text = "higher";
-						//console.log(val);
-						item.active = true;
-						_num++;
-					} else {
-						item.active = false;
+				// ерроры модулей
+				if (item.max == 'ERROR') {
+					var m = Modules.show()[item.sensorId];
+					var val = m.value[0];
+					var bcast = true;
+
+					if (item.active == true) {
+						bcast = false;
 					}
+
+					var activeness = false;
+					if (val == 'ERROR') {
+						activeness = true;
+						_num++;
+					}
+					item.active = activeness;
+
+				} else {
+					// ерроры сенсоров
+					var s = Sensors.show()[item.sensorId];
+					var val = s.value[0];
+					var bcast = true;
+
+					if (item.active == true) {
+						bcast = false;
+					}
+
+					var text = " ";
+					var activeness = false;
+					var onlyMax = false;
+					var onlyMin = false;
+					if (item.max === null) {
+						onlyMin = true;
+						//console.log('onlyMin');
+					}
+					if (item.min === null) {
+						onlyMax = true;
+						//console.log('onlyMax');
+					}
+
+					if (!onlyMax && val < item.min) {
+						text = "lower";
+						activeness = true;
+						_num++;
+					}
+					if (!onlyMin && val > item.max) {
+						text = "higher";
+						activeness = true;
+						_num++;
+					}
+
+					item.active = activeness;
+					item.message = "Value of " + s.title + " is " + text + " than threshold!";
+
 				}
 
-				item.message = "Value of " + s.title + " is " + text + " than threshold!";
-
-
+				// бродкастим аларм
 				if (item.active == true && bcast == true) {
-
 					$rootScope.$broadcast('alarm', {
 						"alarm": item,
 						"title": item.type
@@ -115,11 +161,11 @@
 				}
 			});
 
-			this._num = _num;
+			
 		}
 
 		this.getNum = function () {
-			return this._num;
+			return _num;
 		}
 
 	}

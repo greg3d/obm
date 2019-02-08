@@ -28,6 +28,55 @@
 		.run(runObm)
 		.controller('MainCtrl', MainController)
 		.service('Sensors', SensorsService)
+		.service('Modules', ModulesService)
+
+	function ModulesService() {
+		var inArray = function (needle, haystack, strict) {
+			var found = -1,
+				key, strict = !!strict;
+			var ii = 0;
+			for (key in haystack) {
+				if ((strict && haystack[key] === needle) || (!strict && haystack[key] == needle)) {
+					found = ii;
+					break;
+				}
+				ii++;
+			}
+			return found;
+		}
+
+		var _list = [];
+
+		this.show = function () {
+			return _list;
+		}
+
+		this.prepare = function (mods, needNums, titles, switches) {
+			_list = [];
+			var posi = 0;
+			mods.forEach(function (item, i, arr) {
+				var iname = " " + item.name;
+				var nn = inArray(iname, needNums);
+				if (nn > -1) {
+					item.title = titles[iname];
+					item.switch = false;
+					item.pos = nn;
+					posi = posi + 1;
+
+					switches.forEach(function (nnum, j, brr) {
+						if (" " + nnum == iname) {
+							//console.log(nnum + ' ' + item.name);
+							item.switch = true;
+						}
+					});
+
+					item.visible = true;
+					_list.push(item);
+				}
+
+			});
+		}
+	}
 
 	function SensorsService() {
 
@@ -87,21 +136,7 @@
 
 	}
 
-	function MainController($scope, $interval, IntServ, ALRM, Notification, Sets, TIME, Sensors) {
-
-		var inArray = function (needle, haystack, strict) {
-			var found = -1,
-				key, strict = !!strict;
-			var ii = 0;
-			for (key in haystack) {
-				if ((strict && haystack[key] === needle) || (!strict && haystack[key] == needle)) {
-					found = ii;
-					break;
-				}
-				ii++;
-			}
-			return found;
-		}
+	function MainController($scope, $interval, IntServ, ALRM, Notification, Sets, TIME, Sensors, Modules, auth) {
 
 		var switches = [
 			1003,
@@ -191,24 +226,27 @@
 			});
 			IntServ.PostRequest(req).then(function (resp) {
 				var sens = resp.data.sensors;
+				var mods = resp.data.modules;
 				Sensors.prepare(sens, needNums, titles);
-				//setTimeout(function () {
-				resolve("result");
-				//}, 500);
+				Modules.prepare(mods, needNums, titles, switches);
+				setTimeout(function () {
+					resolve("result");
+				}, 200);
 			});
 		});
 
 		firstLoading.then(
 			function (result) {
-				ALRM.addNew(Sensors.find(9000), 5, -5, 'warning');
 
-				//var tt = 0;
-				//// REQUEST /////
+				// Добавляем нужные алармы
+				ALRM.addNew(9000, Sets.settings.max_frame_temp.value, -50, 'error');
+				ALRM.addNew(9011, null, Sets.settings.ext_power_runtime.value, 'error');
+				ALRM.addNew(9012, null, Sets.settings.battery_ups_level_value.value, 'error');
+				ALRM.addPack(Modules.show());
+
+				//// INTERVAL 1 SEC REQUEST /////
 				$interval(function () {
 					tRequest();
-					//tt++;
-					//Sensors._list[0].value[0] = 15 - tt;
-					//console.log(tt);
 					ALRM.check();
 				}, 1000);
 
@@ -289,71 +327,34 @@
 					$scope.offAllDiabled = false;
 				}
 
-				/// alarm notifications///
-				/*
-				if (ALRM.hasNew1()) {
-					//console.log('has new');
-					var idList = ALRM.getIdList();
-					idList.forEach(function(item,i,arr){
-						var ala = ALRM.get(item);
-						if (ala.active){
-							var realMessage = $filter('translate')(ala.message);
-							var realTitle = $filter('translate')(ala.title);
-							Notification({message: realMessage, title: realTitle},ala.type);
-						};
-
-					});
-					var al = ALRM.getLast();
-					Notification({message: al.message, title: al.title, onClose: ALRM.ack(al.id)},al.type);
-				};
-
-				*/
-
-				var modules = resp.data.modules;
+				var mods = resp.data.modules;
 				var sens = resp.data.sensors;
-				var uNum = 0;
+
 
 				var arr1 = [];
 				var arr2 = [];
 				var arr3 = [];
 				var arr4 = [];
 
-				var posi = 0;
+				Modules.prepare(mods, needNums, titles, switches);
+				Sensors.prepare(sens, needNums, titles);
 
-				modules.forEach(function (item, i, arr) {
-					var iname = " " + item.name;
-					var nn = inArray(iname, needNums);
-					if (nn > -1) {
-						item.title = titles[iname];
-						item.switch = false;
-						item.pos = nn;
-						posi++;
+				//Modules.show()[1].value[0] = 'ERROR';
 
-						switches.forEach(function (nnum, j, brr) {
-							if (" " + nnum == iname) {
-								//console.log(nnum + ' ' + item.name);
-								item.switch = true;
-							}
-						});
-
-						item.visible = true;
-
-						if (Math.floor(item.name / 1000) == 1) {
-							arr1.push(item);
-						}
-						if (Math.floor(item.name / 1000) == 2) {
-							arr2.push(item);
-						}
-						if (Math.floor(item.name / 1000) == 3) {
-							arr3.push(item);
-						}
-						if (Math.floor(item.name / 1000) == 4) {
-							arr4.push(item);
-						}
+				Modules.show().forEach(function (item, i, arr) {
+					if (Math.floor(item.name / 1000) == 1) {
+						arr1.push(item);
+					}
+					if (Math.floor(item.name / 1000) == 2) {
+						arr2.push(item);
+					}
+					if (Math.floor(item.name / 1000) == 3) {
+						arr3.push(item);
+					}
+					if (Math.floor(item.name / 1000) == 4) {
+						arr4.push(item);
 					}
 				});
-
-				Sensors.prepare(sens, needNums, titles);
 
 				$scope.ups = arr1;
 				$scope.units = arr2;
@@ -387,9 +388,10 @@
 		});
 	}
 
-	function runObm($rootScope, $locale, $state, $location, auth, Sensors) {
+	function runObm($rootScope, $locale, $state, $location, auth, Sensors, Modules) {
 
 		$rootScope.Sensors = Sensors;
+		$rootScope.Modules = Modules;
 
 		$locale.NUMBER_FORMATS.GROUP_SEP = ' ';
 

@@ -11,7 +11,7 @@
             </thead>
             <tbody ng-repeat="(index,value) in ALRM.getList()">
                 <tr ng-class="{'error': value.type=='error',
-                    'warning': value.type=='warning'}">
+                    'warning': value.type=='warning'}" ng-show="value.active">
                     <td>{{ index }}</td>
                     <td>{{ value.sensor.title | translate }}</td>
                     <td>{{ value.message | translate }}</td>

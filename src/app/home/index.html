@@ -53,6 +53,9 @@
 				<div class="status-field storage" ng-class="{'disabled':fullTree.nas.valid==false}">
 					{{ '_storage' | translate }}: {{ fullTree.nas.storage | number:3 }} {{ fullTree.nas.unit }}
 				</div>
+				<div class="status-field storage" ng-class="{'disabled':fullTree.nas.valid==false}">
+					USB HDD: {{ fullTree.usb_hdd.storage | number:3 }} {{ fullTree.usb_hdd.unit }}
+				</div>
 				<div class="status-field storage" ng-class="{'disabled':fullTree.speed.valid==false}">
 					{{ '_speed' | translate }}: {{ fullTree.speed.value | number:2 }} {{ fullTree.speed.unit }}
 				</div>
