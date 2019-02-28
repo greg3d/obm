@@ -47,11 +47,11 @@ tr.warning td {
 }
 
 .ui-notification.killed {
-    -webkit-transition: opacity ease 0.5s;
-    -o-transition: opacity ease 0.5s;
-    transition: opacity ease 0.5s;
+    -webkit-transition: opacity ease 1s;
+    -o-transition: opacity ease 1s;
+    transition: opacity ease 1s;
 
-    opacity: 0.5;
+    opacity: 0.1;
 }
 
 .ui-notification>h3 {

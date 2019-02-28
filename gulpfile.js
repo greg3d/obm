@@ -15,9 +15,10 @@ const {
 
 const gulpif = require('gulp-if');
 const minify = require('gulp-clean-css');
+const htmlmin = require('gulp-htmlmin');
 
 var prodMode = false;
-const ws = require('gulp-webserver-io');
+//const ws = require('gulp-webserver-io');
 const min = ".min";
 var destt = 'builds/dev';
 var add = '';
@@ -27,8 +28,8 @@ function libsjs() {
 	return src([
 			'node_modules/angular/angular' + add + '.js',
 			'node_modules/angular-ui-router/release/angular-ui-router' + add + '.js',
-			'node_modules/angular-animate/angular-animate' + add + '.js',
-			'node_modules/angular-touch/angular-touch' + add + '.js',
+			//'node_modules/angular-animate/angular-animate' + add + '.js',
+			//'node_modules/angular-touch/angular-touch' + add + '.js',
 			'node_modules/angular-ui-notification/dist/angular-ui-notification' + add + '.js',
 			'node_modules/angular-translate/dist/angular-translate.min.js',
 			'node_modules/angular-ui-bootstrap/dist/ui-bootstrap.js',
@@ -77,14 +78,23 @@ function css() {
 		.pipe(dest(destt))
 }
 
-function html() {
+function move() {
 	return src([
-			'src/*.html',
-			'src/**/*.html',
 			'src/images*/*',
 			'src/fonts*/*',
 			'src/*.json'
 		])
+		.pipe(dest(destt))
+}
+
+function html() {
+	return src([
+			'src/*.html',
+			'src/**/*.html'
+		])
+		.pipe(htmlmin({
+			collapseWhitespace: true
+		}))
 		.pipe(dest(destt))
 }
 
@@ -95,23 +105,13 @@ function production(cb) {
 	cb();
 }
 
-function webserver() {
-	return src('builds/dev')
-		.pipe(ws({
-			livereload: false,
-			directoryListing: false,
-			open: true,
-			ioDebugger: true // enable the ioDebugger  
-		}))
-}
-
 exports.libsjs = libsjs;
 exports.libscss = libscss;
-exports.webserver = webserver;
 
 exports.js = js;
 exports.css = css;
 exports.html = html;
+exports.move = move;
 
-exports.default = series(libsjs, libscss, js, css, html);
-exports.prod = series(production, libsjs, libscss, js, css, html);
+exports.default = series(libsjs, libscss, js, css, html, move);
+exports.prod = series(production, libsjs, libscss, js, css, html, move);

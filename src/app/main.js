@@ -7,7 +7,7 @@
 			'ui.bootstrap',
 			'ui.router',
 			'ui-notification',
-			'ngAnimate',
+			//'ngAnimate',
 			'obm.intouch',
 			'obm.settings',
 			//	'obm.users',

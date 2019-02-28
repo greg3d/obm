@@ -1,28 +1,9 @@
-<div class="row" ng-controller="GetTreeCtrl">
+<div class="row" >
   <!--DIAG-->
   <!--div class="col-sm-6 col-md-4 col-lg-3"-->
   <div class="col-xs-12">
     <pre>{{ fullTree | json }}</pre>
-    
     <pre>{{ Sets.settings | json }}</pre>
   </div>
 
 </div>
-
-
-
-
-<!--nodes_renderer-->
-<script type="text/ng-template" id="nodes_renderer.html">
-  {{ node.name }} : {{ node.title }} <span class="val" ng-if="node.value"> : {{ node.value[0] }} {{ node.unit }}, </span><span class="validity">{{ node.value[1] }}</span>
-</script>
-
-<script type="text/ng-template" id="nodes_ontable.html">
-  <span class="nodeTitle">{{node.title | translate}}</span>
-  <span class="val" ng-if="node.value"> : {{node.value}}</span>
-  <div ng-model="node.nodes">
-    <div ng-repeat="node in node.nodes" ng-include="'nodes_ontable.html'">
-
-    </div>
-  </div>
-</script>

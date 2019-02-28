@@ -1,5 +1,4 @@
-<script type="text/ng-template" id="main_row.html">
-	{{ item.title }}
+<script type="text/ng-template" id="main_row.html">{{ item.title }}
 	<span class="right" ng-class="{
 		'state-on':item.value[0]=='ON',
 		'state-off':item.value[0]=='OFF',
@@ -8,119 +7,12 @@
 		'state-na':item.value[1]==false,
 		}">
 	{{ item.value[0] | translate }}
-	</span>
-</script>
-
-<script type="text/ng-template" id="sensors_row.html">
-	{{ item.title }}
+	</span></script><script type="text/ng-template" id="sensors_row.html">{{ item.title }}
 	<span class="right" class="state-on" ng-class="{'state-na':item.value[1]==false,
 	'state-error':item.warning==true}" >
 	{{ item.value[0] | number:2 }} {{ item.unit }}
-	</span>
-</script>
-
-<!-- ============================================================================ -->
-<div class="row">
-	<div class="col-sm-12 col-md-12 col-lg-3">
-		<div class="row">
-		    <!--START - STOP-->
-			<div class="col-sm-12 col-md-4 col-lg-12">
-				<div class="row">
-					<div class="col-xs-12 col-sm-6">
-						<button class="button-start" ng-class="{'disabled': startDisabled}" ng-disabled="startDisabled" ng-click="startMeasure()">{{ '_START' | translate }}</button>
-					</div>
-					<div class="col-xs-12 col-sm-6">
-						<button class="button-stop" ng-class="{'disabled': stopDisabled}" ng-disabled="stopDisabled" ng-click="stopMeasure()">{{ '_STOP' | translate }}</a>
-					</div>
-				</div>
-			</div>
-			<!--STATUS-->
-			<div class="col-sm-12 col-md-4 col-lg-12">
-				<div class="status-field" ng-class="{
+	</span></script><!-- ============================================================================ --><div class="row"><div class="col-sm-12 col-md-12 col-lg-3"><div class="row"><!--START - STOP--><div class="col-sm-12 col-md-4 col-lg-12"><div class="row"><div class="col-xs-12 col-sm-6"><button class="button-start" ng-class="{'disabled': startDisabled}" ng-disabled="startDisabled" ng-click="startMeasure()">{{ '_START' | translate }}</button></div><div class="col-xs-12 col-sm-6"><button class="button-stop" ng-class="{'disabled': stopDisabled}" ng-disabled="stopDisabled" ng-click="stopMeasure()">{{ '_STOP' | translate }}</button></div></div></div><!--STATUS--><div class="col-sm-12 col-md-4 col-lg-12"><div class="status-field" ng-class="{
 					'measure': mode=='MR_MEASURE',
 					'power': mode=='MR_RUN_READY'||mode=='MR_RUN_STAND_BY',
 					'ready':mode=='MR_READY',
-					'off':mode=='MR_STAND_BY'||mode=='MR_OFF'}">
-					{{ mode | translate }}
-				</div>
-				<div class="status-group">
-					<div class="status-indicator green">
-						<span>{{ Sets.settings.control_mode.list[Sets.settings.control_mode.value] }}</span>
-					</div>
-					<div class="status-indicator debug" ng-class="{ 'red': Sets.settings.debug.value }">debug</div>
-					<div class="status-indicator dps" ng-class="{ 'yellow': fullTree.odometer.mode == 1 }">Emulator</div>
-				</div>
-				<div class="status-field storage" ng-class="{'disabled':fullTree.nas.valid==false}">
-					{{ '_storage' | translate }}: {{ fullTree.nas.storage | number:3 }} {{ fullTree.nas.unit }}
-				</div>
-				<div class="status-field storage" ng-class="{'disabled':fullTree.nas.valid==false}">
-					USB HDD: {{ fullTree.usb_hdd.storage | number:3 }} {{ fullTree.usb_hdd.unit }}
-				</div>
-				<div class="status-field storage" ng-class="{'disabled':fullTree.speed.valid==false}">
-					{{ '_speed' | translate }}: {{ fullTree.speed.value | number:2 }} {{ fullTree.speed.unit }}
-				</div>
-			</div>
-			<!--OFF ON-->
-			<div class="col-sm-12 col-md-4 col-lg-12">
-				<div class="row zb-btn-group">
-					<div class="col-xs-12 col-sm-6">
-						<button
-							ng-click="powerOn()"
-							type="button"
-							class="zb-btn btn btn-lg btn-block zb-on"
-							ng-disabled="onDisabled"
-							ng-class="{'disabled':onDisabled}">
-							{{ '_ON' | translate }}
-						</button>
-					</div>
-					<div class="col-xs-12 col-sm-6">
-						<button
-							ng-click="powerOff()"
-							type="button"
-							class="zb-btn btn btn-lg btn-block zb-off"
-							ng-disabled="offDisabled"
-							ng-class="{'disabled':offDisabled}">
-							{{ '_STDBY' | translate }}
-						</button>
-					</div>
-					<div class="col-xs-12">
-						<button
-							ng-click="powerOffAll()"
-							type="button"
-							class="zb-btn btn btn-lg btn-block zb-off"
-							ng-disabled="offAllDisabled"
-							ng-class="{'disabled':offAllDisabled}">
-							{{ '_OFFALL' | translate }}
-						</button>
-					</div>
-				</div>
-			</div>
-		</div>
-	</div>
-    <!--Системы-->
-	<div class="col-xs-12 col-sm-6 col-md-4 col-lg-3">
-		<!-- Основная система -->
-		<h3 class="acc-sys">{{ 'UPS' | translate }}</h3>
-		<ul class="diag">
-			<li ng-repeat="item in ups | filter: {visible:true} " ng-include="'main_row.html'"></li>
-		</ul>
-		<!-- Вспомогательное -->
-		<h3 class="pos-sys">{{ 'Units' | translate }}</h3>
-		<ul class="diag">
-			<li ng-repeat="item in units | filter: {visible:true}" ng-include="'main_row.html'"></li>
-		</ul>
-	</div>
-	<div class="col-xs-12 col-sm-6 col-md-4 col-lg-3">
-		<!-- Сеть -->
-		<h3 class="green-sys">{{ 'Controllers' | translate }}</h3>
-		<ul class="diag">
-			<li ng-repeat="item in controllers | filter: {visible:true}" ng-include="'main_row.html'"></li>
-		</ul>
-	</div>
-	<div class="col-xs-12 col-sm-12 col-md-4 col-lg-3">
-		<h3 class="pos-sys">{{ 'Sensors' | translate }}</h3>
-		<ul class="diag">
-			<li ng-repeat="item in Sensors.show() | filter: {visible:true}" ng-include="'sensors_row.html'"></li>
-		</ul>
-	</div>
-</div>
+					'off':mode=='MR_STAND_BY'||mode=='MR_OFF'}">{{ mode | translate }}</div><div class="status-group"><div class="status-indicator green"><span>{{ Sets.settings.control_mode.list[Sets.settings.control_mode.value] }}</span></div><div class="status-indicator debug" ng-class="{ 'red': Sets.settings.debug.value }">debug</div><div class="status-indicator dps" ng-class="{ 'yellow': fullTree.odometer.mode == 1 }">Emulator</div></div><div class="status-field storage" ng-class="{'disabled':fullTree.nas.valid==false}">{{ '_storage' | translate }}: {{ fullTree.nas.storage | number:3 }} {{ fullTree.nas.unit }}</div><div class="status-field storage" ng-class="{'disabled':fullTree.nas.valid==false}">USB HDD: {{ fullTree.usb_hdd.storage | number:3 }} {{ fullTree.usb_hdd.unit }}</div><div class="status-field storage" ng-class="{'disabled':fullTree.speed.valid==false}">{{ '_speed' | translate }}: {{ fullTree.speed.value | number:2 }} {{ fullTree.speed.unit }}</div></div><!--OFF ON--><div class="col-sm-12 col-md-4 col-lg-12"><div class="row zb-btn-group"><div class="col-xs-12 col-sm-6"><button ng-click="powerOn()" type="button" class="zb-btn btn btn-lg btn-block zb-on" ng-disabled="onDisabled" ng-class="{'disabled':onDisabled}">{{ '_ON' | translate }}</button></div><div class="col-xs-12 col-sm-6"><button ng-click="powerOff()" type="button" class="zb-btn btn btn-lg btn-block zb-off" ng-disabled="offDisabled" ng-class="{'disabled':offDisabled}">{{ '_STDBY' | translate }}</button></div><div class="col-xs-12"><button ng-click="powerOffAll()" type="button" class="zb-btn btn btn-lg btn-block zb-off" ng-disabled="offAllDisabled" ng-class="{'disabled':offAllDisabled}">{{ '_OFFALL' | translate }}</button></div></div></div></div></div><!--Системы--><div class="col-xs-12 col-sm-6 col-md-4 col-lg-3"><!-- Основная система --><h3 class="acc-sys">{{ 'UPS' | translate }}</h3><ul class="diag"><li ng-repeat="item in ups | filter: {visible:true} " ng-include="'main_row.html'"></li></ul><!-- Вспомогательное --><h3 class="pos-sys">{{ 'Units' | translate }}</h3><ul class="diag"><li ng-repeat="item in units | filter: {visible:true}" ng-include="'main_row.html'"></li></ul></div><div class="col-xs-12 col-sm-6 col-md-4 col-lg-3"><!-- Сеть --><h3 class="green-sys">{{ 'Controllers' | translate }}</h3><ul class="diag"><li ng-repeat="item in controllers | filter: {visible:true}" ng-include="'main_row.html'"></li></ul></div><div class="col-xs-12 col-sm-12 col-md-4 col-lg-3"><h3 class="pos-sys">{{ 'Sensors' | translate }}</h3><ul class="diag"><li ng-repeat="item in Sensors.show() | filter: {visible:true}" ng-include="'sensors_row.html'"></li></ul></div></div>

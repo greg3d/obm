@@ -4,11 +4,10 @@
   "description": "",
   "main": "index.js",
   "dependencies": {
-    "angular-chart.js": "^1.1.1",
-    "chart.js": "^2.6.0",
     "angular": "^1.7.3",
     "angular-animate": "^1.7.3",
     "angular-bootstrap": "^0.12.2",
+    "angular-chart.js": "^1.1.1",
     "angular-touch": "^1.7.3",
     "angular-translate": "^2.18.1",
     "angular-ui": "^1.0.0",
@@ -17,6 +16,7 @@
     "angular-ui-router": "^1.0.20",
     "angularjs": "0.0.1",
     "bootstrap": "^3.3.7",
+    "chart.js": "^2.6.0",
     "ng-annotate": "^1.2.2"
   },
   "devDependencies": {
@@ -25,6 +25,7 @@
     "gulp-clean-css": "^3.10.0",
     "gulp-concat": "^2.6.1",
     "gulp-cssmin": "^0.2.0",
+    "gulp-htmlmin": "^5.0.1",
     "gulp-if": "^2.0.2",
     "gulp-ng-annotate": "^2.1.0",
     "gulp-ngmin": "^0.3.0",
@@ -32,7 +33,6 @@
     "gulp-sass": "^3.2.1",
     "gulp-scss": "^1.4.0",
     "gulp-uglify": "^3.0.1",
-    "gulp-webserver-io": "^2.2.1",
     "jasmine": "^2.6.0",
     "jasmine-core": "^2.6.3",
     "karma": "^3.0.0",

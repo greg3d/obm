@@ -1,6 +1,4 @@
-<!--Содержимое блеадь-->
-<script type="text/ng-template" id="power_row.html">
-	<div class="col-xs-12 col-sm-6 title">{{ item.title }}</div>
+<!--Содержимое блеадь--><script type="text/ng-template" id="power_row.html"><div class="col-xs-12 col-sm-6 title">{{ item.title }}</div>
 	<div class="col-xs-5 col-sm-3 value" >
 		<span class="right" ng-class="{
 												'state-na':item.value[1]==false,
@@ -24,23 +22,4 @@
 		<div class="btn-group" role="group" aria-label="{{ item.name }}" ng-if="item.pulse==true">
 		  <button type="button" class="btn btn-default" ng-click="switch(item.name,1)" > {{ '_RUN' | translate }} </button>
 		</div>
-	</div>
-</script>
-
-<!--ТЕЛО блеадь-->
-<div class="row" ng-controller="PwrCtrl">
-	<div class="col-md-12 col-sm-12 col-lg-8 col-lg-offset-2">
-		<h2>{{ 'UPS' | translate }}</h2>
-		<div ng-repeat="item in ups | filter: {switch:true}">
-			<div class="module row" ng-include="'power_row.html'"></div>
-		</div>
-		<h2>{{ 'Units' | translate }}</h2>
-		<div ng-repeat="item in units | filter: {switch:true}">
-					<div class="module row" ng-include="'power_row.html'"></div>
-		</div>
-		<h2>{{ 'Controllers' | translate }}</h2>
-		<div ng-repeat="item in controllers | filter: {switch:true}">
-			<div class="module row" ng-include="'power_row.html'"></div>
-		</div>
-	</div>
-</div>
+	</div></script><!--ТЕЛО блеадь--><div class="row" ng-controller="PwrCtrl"><div class="col-md-12 col-sm-12 col-lg-8 col-lg-offset-2"><h2>{{ 'UPS' | translate }}</h2><div ng-repeat="item in ups | filter: {switch:true}"><div class="module row" ng-include="'power_row.html'"></div></div><h2>{{ 'Units' | translate }}</h2><div ng-repeat="item in units | filter: {switch:true}"><div class="module row" ng-include="'power_row.html'"></div></div><h2>{{ 'Controllers' | translate }}</h2><div ng-repeat="item in controllers | filter: {switch:true}"><div class="module row" ng-include="'power_row.html'"></div></div></div></div>
