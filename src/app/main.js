@@ -219,40 +219,46 @@
 
 		// Загружаем настроечки один раз
 		var firstLoading = new Promise(function (resolve, reject) {
+			var o = this;
 			Sets.Load();
 			var req = JSON.stringify({
 				"action": "get",
 				"type": "status"
 			});
 			IntServ.PostRequest(req).then(function (resp) {
+				$scope.mainError = false;
 				var sens = resp.data.sensors;
 				var mods = resp.data.modules;
 				Sensors.prepare(sens, needNums, titles);
 				Modules.prepare(mods, needNums, titles, switches);
 				setTimeout(function () {
-					resolve("result");
+					resolve("success");
 				}, 200);
+			}, function (resp) {
+				console.log('First loading error!');
+				$scope.mainError = true;
+				reject("error2");
 			});
 		});
 
 		firstLoading.then(
-			function (result) {
-
+			(success) => {
 				// Добавляем нужные алармы
 				ALRM.addNew(9000, Sets.settings.max_frame_temp.value, -50, 'error');
 				ALRM.addNew(9011, null, Sets.settings.ext_power_runtime.value, 'error');
 				ALRM.addNew(9012, null, Sets.settings.battery_ups_level_value.value, 'error');
 				ALRM.addPack(Modules.show());
 
+				$scope.mainError = false;
 				//// INTERVAL 1 SEC REQUEST /////
 				$interval(function () {
 					tRequest();
 					ALRM.check();
 				}, 1000);
-
 			},
-			function (error) {
-				console.log('error');
+			(error) => {
+				console.log(error);
+				firstLoading();
 			}
 		)
 

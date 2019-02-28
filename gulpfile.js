@@ -16,9 +16,10 @@ const {
 const gulpif = require('gulp-if');
 const minify = require('gulp-clean-css');
 const htmlmin = require('gulp-htmlmin');
+const watch = require('gulp-watch');
 
 var prodMode = false;
-//const ws = require('gulp-webserver-io');
+const ws = require('gulp-webserver');
 const min = ".min";
 var destt = 'builds/dev';
 var add = '';
@@ -105,13 +106,31 @@ function production(cb) {
 	cb();
 }
 
+function webserver() {
+	return src('builds/dev')
+		.pipe(ws({
+			livereload: true,
+			open: true
+		}));
+}
+
+
+
 exports.libsjs = libsjs;
 exports.libscss = libscss;
+exports.webserver = webserver;
 
 exports.js = js;
 exports.css = css;
 exports.html = html;
 exports.move = move;
 
+function watchFiles() {
+	watch("./src/app/**/*.scss", css);
+	watch("./src/app/**/*.js", js);
+	watch("./src/app/**/*.html", html);
+}
+
 exports.default = series(libsjs, libscss, js, css, html, move);
 exports.prod = series(production, libsjs, libscss, js, css, html, move);
+exports.serve = series(libsjs, libscss, js, css, html, move, webserver, watchFiles);

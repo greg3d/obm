@@ -70,6 +70,7 @@
 
             }, function (resp) {
                 s.settings = "Error!";
+                console.log('Error reading settings!');
             });
         }
 
