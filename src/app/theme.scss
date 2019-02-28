@@ -1,7 +1,7 @@
 body {
   background: #222;
   font-family: "Scada";
-  background: url('images/background.jpg');
+  background: url('/images/background.jpg');
   background-size: 100%, auto;
 }
 
@@ -100,7 +100,7 @@ position: relative;
 .tabs-left>li {
   float: none;
   margin-bottom: 1px;
-   background: url('images/button.png');
+   background: url('/images/button.png');
   background-size: 100% 100%;
 
   height: 70px;
@@ -180,49 +180,49 @@ font-size: 0;
   top: 18px;
   left: 10px;
 
-  background-image: url('images/home.png');
+  background-image: url('/images/home.png');
   background-size: 100% 100%;
 }
 
 .diag {
-  background-image: url('images/diag.png');
+  background-image: url('/images/diag.png');
 }
 
 .power {
-  background-image: url('images/power.png');
+  background-image: url('/images/power.png');
 }
 
 .schedule {
-  background-image: url('images/schedule.png');
+  background-image: url('/images/schedule.png');
 }
 
 .signals {
-  background-image: url('images/trends.png');
+  background-image: url('/images/trends.png');
 }
 
 .ups {
-  background-image: url('images/ups.png');
+  background-image: url('/images/ups.png');
 }
 
 .odo {
-  background-image: url('images/odo.png');
+  background-image: url('/images/odo.png');
 }
 
 .settings {
-  background-image: url('images/settings.png');
+  background-image: url('/images/settings.png');
 }
 
 .logout {
-  background-image: url('images/logout.png');
+  background-image: url('/images/logout.png');
 }
 
 
 .alarms {
-  background-image: url('images/alarms.png');
+  background-image: url('/images/alarms.png');
 }
 
 .alarms_on {
-  background-image: url('images/alarms_on.png') !important;
+  background-image: url('/images/alarms_on.png') !important;
 }
 
 
@@ -306,11 +306,11 @@ font-size: 0;
 }
 
 .german {
-  background: url('images/ger.png') center center no-repeat;
+  background: url('/images/ger.png') center center no-repeat;
 }
 
 .english {
-  background: url('images/eng.png') center center no-repeat;
+  background: url('/images/eng.png') center center no-repeat;
 }
 
 input.ng-invalid {

@@ -136,7 +136,12 @@
 
 	}
 
-	function MainController($scope, $interval, IntServ, ALRM, Notification, Sets, TIME, Sensors, Modules, auth) {
+	/** 
+	 * Главный контроллер
+	 * Предварительные настройки, алармы, нотификации, время, обработка сенсоров и модулей
+	 */
+	function MainController($scope, $interval, IntServ, ALRM, Notification, Sets, TIME, Sensors, Modules) {
+
 
 		var switches = [
 			1003,
@@ -217,51 +222,75 @@
 
 		$scope.ajaxloading = false;
 
-		// Загружаем настроечки один раз
-		var firstLoading = new Promise(function (resolve, reject) {
-			var o = this;
-			Sets.Load();
-			var req = JSON.stringify({
-				"action": "get",
-				"type": "status"
+		/**
+		 * Функция загрузки настроек и данных в первый раз после запуска приложения
+		 * возвращает Promise (success => все хорошо, error => все плохо)
+		 * error задержка 2000 мс
+		 * success 200 мс
+		 */
+		function firstLoading() {
+			return new Promise(function (resolve, reject) {
+				var o = this;
+				Sets.Load();
+				var req = JSON.stringify({
+					"action": "get",
+					"type": "status"
+				});
+				IntServ.PostRequest(req).then(function (resp) {
+					//$scope.mainError = false;
+					var sens = resp.data.sensors;
+					var mods = resp.data.modules;
+					Sensors.prepare(sens, needNums, titles);
+					Modules.prepare(mods, needNums, titles, switches);
+					setTimeout(function () {
+						resolve("success");
+					}, 200);
+				}, function (resp) {
+					setTimeout(function () {
+						reject("error");
+					}, 2000);
+					
+				});
 			});
-			IntServ.PostRequest(req).then(function (resp) {
-				$scope.mainError = false;
-				var sens = resp.data.sensors;
-				var mods = resp.data.modules;
-				Sensors.prepare(sens, needNums, titles);
-				Modules.prepare(mods, needNums, titles, switches);
-				setTimeout(function () {
-					resolve("success");
-				}, 200);
-			}, function (resp) {
-				console.log('First loading error!');
-				$scope.mainError = true;
-				reject("error2");
-			});
-		});
+		}
 
-		firstLoading.then(
-			(success) => {
-				// Добавляем нужные алармы
-				ALRM.addNew(9000, Sets.settings.max_frame_temp.value, -50, 'error');
-				ALRM.addNew(9011, null, Sets.settings.ext_power_runtime.value, 'error');
-				ALRM.addNew(9012, null, Sets.settings.battery_ups_level_value.value, 'error');
-				ALRM.addPack(Modules.show());
+		/**
+		 * Обертка для FirstLoading
+		 * конфигурирование Алармов, 
+		 * генерация периодического запроса, 
+		 * рекурсивный вызов в случае неудачи первой загрузки.
+		 */
+		function doFirstLoading() {
+			//console.log('ddd');
+			firstLoading().then(
+				function(success) {
+					// Убераем плашку об ошибке
+					$scope.mainError = false;
+					
+					// Добавляем нужные алармы
+					ALRM.addNew(9000, Sets.settings.max_frame_temp.value, -50, 'error');
+					ALRM.addNew(9011, null, Sets.settings.ext_power_runtime.value, 'error');
+					ALRM.addNew(9012, null, Sets.settings.battery_ups_level_value.value, 'error');
+					ALRM.addPack(Modules.show());
+					//// INTERVAL 1 SEC REQUEST /////
+					$interval(function () {
+						tRequest();
+						ALRM.check();
+					}, 1000);
+				},
+				function(error) {
+					// Выводим плашку об ошибке
+					$scope.mainError = true;
+					console.log('Error of First Loading!');
+					return doFirstLoading();
+				}
+			)
+		}
 
-				$scope.mainError = false;
-				//// INTERVAL 1 SEC REQUEST /////
-				$interval(function () {
-					tRequest();
-					ALRM.check();
-				}, 1000);
-			},
-			(error) => {
-				console.log(error);
-				firstLoading();
-			}
-		)
+		// GO!
+		doFirstLoading();
 
+		// слушаем алармы
 		$scope.$on('alarm', function (event, data) {
 			console.log(data);
 			Notification({
@@ -270,7 +299,7 @@
 			}, data.alarm.type);
 		});
 
-		// req function
+		// функция постоянных запросов
 		var tRequest = function () {
 
 			// Берем главное дерево
@@ -342,10 +371,9 @@
 				var arr3 = [];
 				var arr4 = [];
 
+				// Готовим все
 				Modules.prepare(mods, needNums, titles, switches);
 				Sensors.prepare(sens, needNums, titles);
-
-				//Modules.show()[1].value[0] = 'ERROR';
 
 				Modules.show().forEach(function (item, i, arr) {
 					if (Math.floor(item.name / 1000) == 1) {
@@ -378,6 +406,9 @@
 
 	}
 
+	/**
+	 * Конфиг приложения 
+	 */
 	function configObm($urlRouterProvider, NotificationProvider) {
 		//console.log('obm-config');
 		$urlRouterProvider.otherwise('/');
@@ -394,6 +425,9 @@
 		});
 	}
 
+	/**
+	 * Инициализация
+	 */
 	function runObm($rootScope, $locale, $state, $location, auth, Sensors, Modules) {
 
 		$rootScope.Sensors = Sensors;

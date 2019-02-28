@@ -27,7 +27,7 @@ color: #aaf;
 
 
 .button-start {
-	background: url(images/stop.png);
+	background: url('/images/stop.png');
 
 
 	text-align: center;
@@ -43,7 +43,7 @@ display: block;
 
 	display: block;
 
-	background: url(images/start.png);
+	background: url('/images/start.png');
 
 
 	text-align: center;
@@ -85,7 +85,7 @@ display: block;
 
 
 .button-stop.disabled, .button-start.disabled {
-	background-image: url(images/disabled.png) !important;
+	background-image: url('/images/disabled.png') !important;
 	background-size: 100% 100%;
   color: #555;
   text-shadow: none;
@@ -101,7 +101,7 @@ display: block;
 // вкл и выкл
 .button-on {
 
-    background: url(images/off.png);
+    background: url('/images/off.png');
     background-size: 100% 100%;
     width: 100px;
     height: 100px;
@@ -118,7 +118,7 @@ display: block;
 .button-off {
     display: block;
 
-    background: url(images/off.png);
+    background: url('/images/off.png');
     background-size: 100% 100%;
     width: 98px;
     height: 100px;
@@ -157,7 +157,7 @@ a.button-off:active, a.button-on:active {
 
 
 .button-off.disabled, .button-on.disabled {
-    background: url(images/dis.png);
+    background: url('/images/dis.png');
     background-size: 100% 100%;
   color: #777;
   text-shadow: none;

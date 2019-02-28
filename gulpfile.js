@@ -4,14 +4,13 @@ const {
 	dest,
 	parallel,
 	series
-} = require('gulp'),
-	concat = require('gulp-concat'),
-	scss = require('gulp-sass'),
-	uglify = require('gulp-uglify'),
-	plumber = require('gulp-plumber'),
-	ngAnnotate = require('gulp-ng-annotate'),
-	//ngmin = require('gulp-ngmin'),
-	autoprefixer = require('gulp-autoprefixer');
+} = require('gulp');
+
+const concat = require('gulp-concat');
+const scss = require('gulp-sass');
+const uglify = require('gulp-uglify');
+const plumber = require('gulp-plumber');
+const ngAnnotate = require('gulp-ng-annotate');
 
 const gulpif = require('gulp-if');
 const minify = require('gulp-clean-css');
@@ -70,10 +69,7 @@ function css() {
 		])
 		.pipe(plumber())
 		.pipe(scss())
-		.pipe(autoprefixer({
-			browsers: ['last 3 versions'],
-			cascade: false
-		}))
+		//.pipe(autoprefixer())
 		.pipe(gulpif(prodMode, minify()))
 		.pipe(concat('app.css'))
 		.pipe(dest(destt))
@@ -107,7 +103,7 @@ function production(cb) {
 }
 
 function webserver() {
-	return src('builds/dev')
+	return src(destt)
 		.pipe(ws({
 			livereload: true,
 			open: true
@@ -128,9 +124,15 @@ exports.move = move;
 function watchFiles() {
 	watch("./src/app/**/*.scss", css);
 	watch("./src/app/**/*.js", js);
-	watch("./src/app/**/*.html", html);
+	watch(["./src/app/**/*.html","./src/app/index.html"], html);
+}
+
+function prod(cb) {
+	series(production, libsjs, libscss, js, css, html, move);
+	cb();
 }
 
 exports.default = series(libsjs, libscss, js, css, html, move);
 exports.prod = series(production, libsjs, libscss, js, css, html, move);
 exports.serve = series(libsjs, libscss, js, css, html, move, webserver, watchFiles);
+exports.prodserve = series(prod,webserver)
