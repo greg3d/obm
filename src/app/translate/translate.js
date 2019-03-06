@@ -91,7 +91,49 @@
 		'balis_speed_on': 'Balisa switch on speed',
 		'balis_speed_off': 'Balisa switch off speed',
 		'ext_power_time': 'Time to work on Battery',
-		'ext_power_runtime': 'Remaining battery time alarm'
+		'ext_power_runtime': 'Remaining battery time alarm',
+
+		'y_axle_12_sens_k':	'Transversal acceleration on the axle-box Y 12, K',
+		'y_axle_11_sens_k':	'Transversal acceleration on the axle-box Y 11, K',
+		'y_axle_21_sens_k':	'Transversal acceleration on the axle-box Y 21, K',
+		'y_axle_22_sens_k':	'Transversal acceleration on the axle-box Y 22, K',
+		'y_axle_42_sens_k':	'Transversal acceleration on the axle-box Y 42, K',
+		'y_axle_41_sens_k':	'Transversal acceleration on the axle-box Y 41, K',
+		'z_axle_11_sens_k':	'Vertical acceleration on the axle-box Z 11, K',
+		'z_axle_12_sens_k':	'Vertical acceleration on the axle-box Z 12, K',
+		'z_axle_21_sens_k':	'Vertical acceleration on the axle-box Z 21, K',
+		'z_axle_22_sens_k':	'Vertical acceleration on the axle-box Z 22, K',
+		'z_axle_41_sens_k':	'Vertical acceleration on the axle-box Z 41, K',
+		'z_axle_42_sens_k':	'Vertical acceleration on the axle-box Z 42, K',
+		'y_bogie_1_sens_k':	'Transversal acceleration of the bogie frame Y 1, K',
+		'y_bogie_2_sens_k':	'Transversal acceleration of the bogie frame Y 2, K',
+		'y_bogie_3_sens_k':	'Transversal acceleration of the bogie frame Y 3, K',
+		'y_bogie_4_sens_k':	'Transversal acceleration of the bogie frame Y 4, K',
+		'y_body_I_sens_k':	'Transversal acceleration of the vehicle’s body over kingpin I, K',
+		'y_body_II_sens_k':	'Transversal acceleration of the vehicle’s body over kingpin II, K',
+		'z_body_I_sens_k':	'Vertical acceleration of the vehicle’s body over kingpin I, K',
+		'z_body_II_sens_k':	'Vertical acceleration of the vehicle’s body over kingpin II, K',
+
+
+		'y_axle_12_sens_b':	'Transversal acceleration on the axle-box Y 12, B',
+		'y_axle_11_sens_b':	'Transversal acceleration on the axle-box Y 11, B',
+		'y_axle_42_sens_b':	'Transversal acceleration on the axle-box Y 42, B',
+		'y_axle_41_sens_b':	'Transversal acceleration on the axle-box Y 41, B',
+		'z_axle_11_sens_b':	'Vertical acceleration on the axle-box Z 11, B',
+		'z_axle_12_sens_b':	'Vertical acceleration on the axle-box Z 12, B',
+		'z_axle_41_sens_b':	'Vertical acceleration on the axle-box Z 41, B',
+		'z_axle_42_sens_b':	'Vertical acceleration on the axle-box Z 42, B',
+		'y_bogie_1_sens_b':	'Transversal acceleration of the bogie frame Y 1, B',
+		'y_bogie_2_sens_b':	'Transversal acceleration of the bogie frame Y 2, B',
+		'y_bogie_3_sens_b':	'Transversal acceleration of the bogie frame Y 3, B',
+		'y_bogie_4_sens_b':	'Transversal acceleration of the bogie frame Y 4, B',
+		'y_body_I_sens_b':	'Transversal acceleration of the vehicle’s body over kingpin I, B',
+		'y_body_II_sens_b':	'Transversal acceleration of the vehicle’s body over kingpin II, B',
+		'z_body_I_sens_b':	'Vertical acceleration of the vehicle’s body over kingpin I, B',
+		'z_body_II_sens_b':	'Vertical acceleration of the vehicle’s body over kingpin II, B',
+
+		
+
 	}
 
 	translationsRU = {

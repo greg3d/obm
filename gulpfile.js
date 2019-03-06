@@ -12,6 +12,7 @@ const uglify = require('gulp-uglify');
 const plumber = require('gulp-plumber');
 const ngAnnotate = require('gulp-ng-annotate');
 
+const sftp = require('gulp-sftp-clean');
 const gulpif = require('gulp-if');
 const minify = require('gulp-clean-css');
 const htmlmin = require('gulp-htmlmin');
@@ -124,7 +125,7 @@ exports.move = move;
 function watchFiles() {
 	watch("./src/app/**/*.scss", css);
 	watch("./src/app/**/*.js", js);
-	watch(["./src/app/**/*.html","./src/app/index.html"], html);
+	watch(["./src/app/**/*.html", "./src/app/index.html"], html);
 }
 
 function prod(cb) {
@@ -132,7 +133,23 @@ function prod(cb) {
 	cb();
 }
 
-exports.default = series(libsjs, libscss, js, css, html, move);
-exports.prod = series(production, libsjs, libscss, js, css, html, move);
+function publish() {
+	//console.log ('./' + destt);
+	return src('./' + destt)
+		.pipe(sftp({
+			host: "192.168.0.1",
+			port: 22,
+			user: 'root',
+			pass: 'root',
+			remotePath: '/home/infotrans/web_ui/',
+		}));
+
+	//cb();
+}
+
+
+
+exports.default = series(libsjs, libscss, js, css, html, move, publish);
+exports.prod = series(production, libsjs, libscss, js, css, html, move, publish);
 exports.serve = series(libsjs, libscss, js, css, html, move, webserver, watchFiles);
-exports.prodserve = series(prod,webserver)
+exports.prodserve = series(prod, webserver);

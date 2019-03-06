@@ -37,3 +37,17 @@ h3.settings-category-title {
   color: rgba(240,240,190,0.7);
    font-size: 100%;
 }
+
+.settings-page .tabs a {
+  text-decoration: none;
+  border-bottom: 1px dashed #fff;
+  float: left;
+  margin-right: 10px;
+  color: #fff;
+  cursor: pointer;
+}
+
+.settings-page .tabs a.active {
+  border-bottom: none;
+  color: rgb(255, 251, 0);
+}
