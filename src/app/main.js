@@ -180,8 +180,8 @@
 			" 1003": "UPS Status",
 
 			" 2002": "Odometer",
-			" 2005": "EuroBalis Recv",
-			" 2008": "EuroBalis Emitter",
+			" 2005": "ETCS Balise Reader",
+			" 2008": "ETCS Balise Emitter",
 			" 2011": "IMU",
 			" 2014": "Rail Moisture Sensor",
 			" 2017": "Tensometrics",
