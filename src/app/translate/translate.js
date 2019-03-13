@@ -94,6 +94,7 @@
 		'ext_power_runtime': 'Remaining battery time alarm',
 
 		'Balisa':'ETCS Balise Reader',
+		'DYNSYS':'Axle box acceleration sensors',
 
 		'y_axle_11_sens_k':'y_axle_11_sens, K',
 		'y_axle_12_sens_k':'y_axle_12_sens, K',

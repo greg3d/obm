@@ -44,7 +44,7 @@
         <h2>{{ '_settings' | translate }}</h2>
         <div class="tabs">
             <div><a ng-click="Sets.applyFilter(0)">All</a></div>
-            <div ng-repeat="item in Sets.tags"><a ng-class="{'active':item.active}" ng-click="Sets.applyFilter(item.value)">{{ item.value }}</a></div>
+            <div ng-repeat="item in Sets.tags"><a ng-class="{'active':item.active}" ng-click="Sets.applyFilter(item.value)">{{ item.value | translate }}</a></div>
         </div>
         <form name="settingz" ng-model="settingz">
             <div ng-repeat="item in Sets.settingsKeys | orderBy:'category' | filter:Sets.searchText as result" ng-include="'settings_form_row'">
