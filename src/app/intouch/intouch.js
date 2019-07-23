@@ -47,7 +47,7 @@
                 method: 'POST',
                 url: '/intouch_serv',
                 data: req,
-                timeout: 500,
+                timeout: 1000,
                 headers: {
                     'Content-Type': 'application/json'
                 }

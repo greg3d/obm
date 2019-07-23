@@ -3,7 +3,8 @@ const {
 	src,
 	dest,
 	parallel,
-	series
+	series,
+	gulp
 } = require('gulp');
 
 const concat = require('gulp-concat');
@@ -12,7 +13,7 @@ const uglify = require('gulp-uglify');
 const plumber = require('gulp-plumber');
 const ngAnnotate = require('gulp-ng-annotate');
 
-const sftp = require('gulp-sftp-clean');
+const sftp = require('gulp-sftp-up4');
 const gulpif = require('gulp-if');
 const minify = require('gulp-clean-css');
 const htmlmin = require('gulp-htmlmin');
@@ -134,19 +135,21 @@ function prod(cb) {
 }
 
 function publish() {
-	//console.log ('./' + destt);
-	return src('./' + destt)
-		.pipe(sftp({
-			host: "192.168.0.1",
+	console.log ('./' + destt + '/**/*.*');
+	return src([
+		'./' + destt + '/**/*.js',
+		'./' + destt + '/**/*.css',
+		'./' + destt + '/**/*.html',
+	]).pipe(sftp({
+			host: "192.168.0.163",
 			port: 22,
-			user: 'root',
-			pass: 'root',
-			remotePath: '/home/infotrans/web_ui/',
+			user: "root",
+			pass: "root",
+			remotePath: "/home/infotrans/web_ui/",
 		}));
 
 	//cb();
 }
-
 
 
 exports.default = series(libsjs, libscss, js, css, html, move, publish);

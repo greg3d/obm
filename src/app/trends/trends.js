@@ -24,11 +24,12 @@
 			dbc.num = 0;
 
 
-			dbc.dbgStatus = "response";
+			dbc.dbgStatus = "";
+			dbc.dbgRequest = "";
 
 			dbc.dbgUrl = 'readbufs';
 			dbc.dbgAction = 'get';
-			dbc.dbgType = 'readbufs';
+			dbc.dbgType = 'data';
 			dbc.dbgName = 'MWAY';
 
 
@@ -47,10 +48,12 @@
 					"name": name
 				});
 
+				dbc.dbgRequest = JSON.parse(req);
+
 				IntServ.Custom(url, req).then(function (response) {
 					dbc.dbgStatus = response.data;
-				}, function () {
-					dbc.dbgStatus = "Какая-то ошибочка. Вернулся плохой или пустой ответ. Или не вернулся вообще.";
+				}, function (resp) {
+					dbc.dbgStatus = "Какая-то ошибочка. Вернулся плохой или пустой ответ. Или не вернулся вообще. " + resp.data;
 				});
 			}
 

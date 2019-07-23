@@ -33,6 +33,7 @@
     "gulp-plumber": "^1.2.0",
     "gulp-sass": "^4.0.2",
     "gulp-sftp-clean": "^0.1.7",
+    "gulp-sftp-up4": "^0.1.8",
     "gulp-uglify": "^3.0.1",
     "gulp-watch": "^5.0.1",
     "gulp-webserver": "^0.9.1",
