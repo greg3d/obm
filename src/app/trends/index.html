@@ -43,9 +43,9 @@
     <div class="trends col-xs-12">
         <hr />
         <div ng-repeat="trend in Trends.selectedList">
-            <h3><strong>{{ trend.name }}</strong> -- ({{ trend.type }})</h3>
+            <h3><strong>{{ trend.name }}</strong> &mdash; ({{ trend.type }}) &mdash; current value: <i>{{ trend.y[1023] }}</i></h3>
             <p>{{ trend.comment }}</p>
-            <canvas class="chart chart-line" chart-data="trend.y" chart-labels="trend.x"
+            <canvas class="chart chart-line" chart-data="trend.y" chart-labels="trend.x" height="100"
                 chart-options="Trends.options"></canvas>
             <hr>
         </div>

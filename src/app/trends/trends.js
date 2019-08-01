@@ -31,11 +31,20 @@
 				line: {
 					borderColor: 'rgba(0,0,0)',
 					tension: 0,
-					fill: false
+					fill: false,
+					stepped: true
 				}
 			},
 
-			
+			layout: {
+				padding: {
+					left: 0,
+					right: 0,
+					top: 0,
+					bottom: 0
+				}
+			},
+						
 			scales: {
 				xAxes: [{
 					ticks: {
@@ -80,8 +89,8 @@
 
 					var ch = channel;
 					ch.index = index;
-					ch.x = [];
-					ch.y = [];
+					ch.x = new Array(1024);
+					ch.y = new Array(1024);
 					cc.selectedList.push(ch);
 				}
 			});
@@ -98,6 +107,9 @@
 
 					cc.selectedList.forEach(function (channel, index) {
 						var i = channel.index;
+						channel.x.shift();
+						channel.y.shift();
+
 						channel.y.push(cc.data[i]);
 						channel.x.push(j);
 					});
