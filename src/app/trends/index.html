@@ -2,31 +2,65 @@
 <!--canvas id="line" class="chart chart-line" chart-data="data" chart-labels="labels" chart-series="series" chart-options="options" chart-dataset-override="datasetOverride" chart-click="onClick">
 </canvas-->
 
-<div ng-controller="DbgCtrl as dbc">
-    <div ng-if="auth.isAdmin()">
+<div ng-controller="ChCtrl as cc" class="row">
 
-    <p>
-    Пишешь нужные данные и жмешь нужную кнопку. Если что-то надо изменить - меняешь и жмешь еще раз кнопку "раз в секунду" или "один раз". В этом случае цикл автоматически стопится и перезапускается если нужно (чтобы не было множеств экземпляров этого цикла), кнопка СТОП нужна для того чтобы прекратить цикл запроса.
-    </p>
-       <label class="col-sm-3 control-label">URL:</label><div class="col-sm-9"><input class="form-control input-lg" ng-model="dbc.dbgUrl" /></div>
-       <label class="col-sm-3 control-label">action:</label><div class="col-sm-9"><input class="form-control input-lg" ng-model="dbc.dbgAction" /></div>
-       <label class="col-sm-3 control-label">type:</label><div class="col-sm-9"><input class="form-control input-lg" ng-model="dbc.dbgType" /></div>
-       <label class="col-sm-3 control-label">name:</label><div class="col-sm-9"><input class="form-control input-lg" ng-model="dbc.dbgName" /></div>
-
-       <span class="btn-group">
-            <button type="button" class="btn btn-lg btn-default" ng-click="dbc.once()">Хуйнуть один раз</button>
-            <button type="button" class="btn btn-lg btn-info" ng-click="dbc.interval()">Хуярить раз в секунду</button>
-            <button type="button" class="btn btn-lg btn-danger" ng-click="dbc.stop()">СТОП</button>
-       </span>
-
-       <h3>Кол-во запросов: {{ dbc.num }}</h3>
-       <div class="col-xs-12">
-        Запрос:
-        <pre>{{ dbc.dbgRequest | json }}</pre>
+    <div class="col-xs-12">
+        <p>Select buffer: </p>
+        <div class="buffer-buttons btn-group ">
+            <button ng-repeat="item in Trends.bufList" class="btn btn-primary" type="submit" ng-disabled="item.disabled"
+                ng-click="cc.selectBuffer($index)">
+                {{ item.name }}
+            </button>
         </div>
-       <div class="col-xs-12">
-       Ответ:
-       <pre>{{ dbc.dbgStatus | json }}</pre>
-       </div>
+        <hr />
     </div>
+
+
+
+    <div class="channels col-xs-6" ng-show="Trends.showChList">
+
+        <div ng-repeat="channel in Trends.chList">
+            <div class="btn-group">
+                <button class="btn btn-sm btn-default" ng-class="{'btn-success':channel.selected}">&nbsp;</button>
+                <button class="btn btn-default btn-sm" ng-class="{'active':channel.selected}"
+                    ng-click="cc.selectChannel($index)"><strong>{{ channel.name }}</strong>
+                    ({{ channel.type }})</button>
+            </div>
+
+        </div>
+
+
+    </div>
+
+
+    <div class="start-stop-buttons col-xs-6">
+
+        <button class="btn btn-danger btn-lg" ng-show="Trends.showStartButton" ng-click="Trends.start()">Start</button>
+        <button class="btn btn-warning btn-lg" ng-click="Trends.stop()">Stop</button>
+
+    </div>
+
+    <div class="trends col-xs-12">
+        <hr />
+        <div ng-repeat="trend in Trends.selectedList">
+            <h3><strong>{{ trend.name }}</strong> -- ({{ trend.type }})</h3>
+            <p>{{ trend.comment }}</p>
+            <canvas class="chart chart-line" chart-data="trend.y" chart-labels="trend.x"
+                chart-options="Trends.options"></canvas>
+            <hr>
+        </div>
+
+
+    </div>
+
+    <div class="col-xs-12">
+        <hr />
+        <pre>
+                {{ Trends.selectedList | json }}
+            </pre>
+        <pre>
+            {{ Trends.response | json }}
+        </pre>
+    </div>
+
 </div>

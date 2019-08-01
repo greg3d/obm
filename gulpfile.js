@@ -134,7 +134,7 @@ function prod(cb) {
 	cb();
 }
 
-function publish() {
+function publish(cb) {
 	console.log ('./' + destt + '/**/*.*');
 	return src([
 		'./' + destt + '/**/*.js',
@@ -148,10 +148,10 @@ function publish() {
 			remotePath: "/home/infotrans/web_ui/",
 		}));
 
-	//cb();
+	cb();
 }
 
-
+exports.publish = series(production,publish);
 exports.default = series(libsjs, libscss, js, css, html, move, publish);
 exports.prod = series(production, libsjs, libscss, js, css, html, move, publish);
 exports.serve = series(libsjs, libscss, js, css, html, move, webserver, watchFiles);
