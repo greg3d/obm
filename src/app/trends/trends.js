@@ -36,7 +36,12 @@
 				}
 			},
 
+			responsive: true,
+			maintainAspectRatio: false,
+			aspectRatio: 1,
+
 			layout: {
+
 				padding: {
 					left: 0,
 					right: 0,
@@ -44,7 +49,7 @@
 					bottom: 0
 				}
 			},
-						
+
 			scales: {
 				xAxes: [{
 					ticks: {
@@ -56,13 +61,18 @@
 			},
 
 
+
 			animation: {
 				duration: 0
 			},
 
 		};
 
-
+		cc.clear = function () {
+			cc.showChList = false;
+			cc.showStartButton = false;
+			cc.selectedList = [];
+		}
 
 		cc.showStartButton = false;
 
@@ -89,8 +99,20 @@
 
 					var ch = channel;
 					ch.index = index;
-					ch.x = new Array(1024);
-					ch.y = new Array(1024);
+					ch.x = new Array(512);
+					ch.y = new Array(512);
+
+					var opts = JSON.parse(JSON.stringify(cc.options));
+					ch.options = opts;
+
+					//<h3><strong>{{ trend.name }}</strong> &mdash; ({{ trend.type }}) &mdash; current value: <i>{{ trend.y[1023] }}</i></h3>
+
+
+					ch.options.title = {
+						display: true,
+						text: ch.name + " (" + ch.type + ") - " + ch.comment
+					}
+
 					cc.selectedList.push(ch);
 				}
 			});
@@ -110,8 +132,21 @@
 						channel.x.shift();
 						channel.y.shift();
 
-						channel.y.push(cc.data[i]);
-						channel.x.push(j);
+						var val = 0;
+
+						
+						if (channel.type.indexOf('real', 0) >= 0) {
+							//console.log(channel.type);
+							val = Math.round(cc.data[i]*100)/100;
+						} else {
+							val = cc.data[i];
+						}
+
+						channel.y.push(val);
+						channel.x.push(j / 2);
+
+						channel.options.title.text
+
 					});
 
 
@@ -386,7 +421,8 @@
 	function configTrends($stateProvider, ChartJsProvider) {
 		var mName = 'trends';
 		ChartJsProvider.setOptions({
-			colors: ['#000000', '#000000']
+			colors: ['#000000', '#000000'],
+
 		});
 
 		$stateProvider.state(mName, {

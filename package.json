@@ -1,6 +1,6 @@
 {
   "name": "obm",
-  "version": "0.9.1",
+  "version": "0.9.5a",
   "description": "",
   "main": "index.js",
   "dependencies": {

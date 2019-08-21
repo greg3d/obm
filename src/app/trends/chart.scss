@@ -1,6 +1,22 @@
-canvas {
+.chart-container {
   background: white;
-  padding: 10px 5px;
-  border-radius: 5px;
-  margin-bottom: 1em;
+  overflow: hidden;
+  position: relative;
+  .current {
+    position: absolute;
+    z-index: 999;
+    top: 7px;
+    color: black;
+    right: 10px;
+    font-style: italic;
+    font-weight: bold;
+  }
+}
+
+.trend:first-child .chart-container {
+  border-radius: 5px 5px 0 0;
+}
+
+.trend:last-child .chart-container {
+  border-radius: 0 0 5px 5px;
 }
