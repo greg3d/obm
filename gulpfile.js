@@ -153,5 +153,5 @@ function publish(cb) {
 
 exports.publish = series(production,publish);
 exports.default = series(libsjs, libscss, js, css, html, move);
-exports.prod = series(production, libsjs, libscss, js, css, html, move);
+exports.prod = series(production, libsjs, libscss, js, css, html, move, publish);
 exports.serve = series(libsjs, libscss, js, css, html, move, webserver, watchFiles);
