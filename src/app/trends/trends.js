@@ -5,12 +5,12 @@
 	angular
 		.module('obm.trends', [
 			'ui.router',
-			'chart.js',
+			//'chart.js',
 		])
 
 		.config(configTrends)
 		.controller('LineCtrl', LineController)
-		.controller('DbgCtrl', DebugController)
+		//.controller('DbgCtrl', DebugController)
 		.controller('ChCtrl', ChartController)
 		.service('Trends', TrendsService)
 		.run(runTrends)
@@ -134,10 +134,10 @@
 
 						var val = 0;
 
-						
+
 						if (channel.type.indexOf('real', 0) >= 0) {
 							//console.log(channel.type);
-							val = Math.round(cc.data[i]*100)/100;
+							val = Math.round(cc.data[i] * 100) / 100;
 						} else {
 							val = cc.data[i];
 						}
@@ -259,7 +259,7 @@
 	}
 
 
-	function DebugController(IntServ, $interval) {
+	/*function DebugController(IntServ, $interval) {
 
 		var dbc = this;
 
@@ -346,7 +346,7 @@
 		}
 
 
-	}
+	}*/
 
 
 
@@ -380,50 +380,10 @@
 
 	}
 
-	function LineController($scope) {
-
-		/*
-
-				Chart.defaults.global.animation.easing = 'linear';
-				Chart.defaults.global.animation.duration = 0;
 
 
-			$scope.series = ['Series A'];
-
-			$scope.labels = dataAcq.datax;
-		  $scope.data = dataAcq.datay;
-		  $scope.onClick = function (points, evt) {
-		    console.log(points, evt);
-		  };
-		  $scope.datasetOverride = {
-		  	yAxisID: 'y-axis-1',
-		  	fill: false,
-		  	lineTension: 0,
-		  	borderColor: '#000',
-		  	pointRadius: 0,
-
-		  };
-		  $scope.options = {
-
-		    scales: {
-		      yAxes: [
-		        {
-		          id: 'y-axis-1',
-		          type: 'linear',
-		          display: true,
-		          position: 'left'
-		        }
-		      ]
-		    }
-		  };*/
-	}
-
-	function configTrends($stateProvider, ChartJsProvider) {
+	function configTrends($stateProvider) {
 		var mName = 'trends';
-		ChartJsProvider.setOptions({
-			colors: ['#000000', '#000000'],
-
-		});
 
 		$stateProvider.state(mName, {
 			url: '/' + mName,

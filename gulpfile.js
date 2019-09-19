@@ -36,8 +36,8 @@ function libsjs() {
 			'node_modules/angular-translate/dist/angular-translate.min.js',
 			'node_modules/angular-ui-bootstrap/dist/ui-bootstrap.js',
 			'node_modules/angular-ui-bootstrap/dist/ui-bootstrap-tpls.js',
-			'node_modules/chart.js/dist/Chart' + add + '.js',
-			'node_modules/angular-chart.js/dist/angular-chart' + add + '.js'
+			//'node_modules/chart.js/dist/Chart' + add + '.js',
+			//'node_modules/angular-chart.js/dist/angular-chart' + add + '.js'
 		])
 		.pipe(concat('libs.js'))
 		.pipe(dest(destt))
