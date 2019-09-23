@@ -9,19 +9,22 @@
 		])
 
 		.config(configTrends)
-		.controller('LineCtrl', LineController)
+		//.controller('LineCtrl', LineController)
 		//.controller('DbgCtrl', DebugController)
 		.controller('ChCtrl', ChartController)
 		.service('Trends', TrendsService)
+		.service('Canvas', CanvasService)
 		.run(runTrends)
 
-	function TrendsService(IntServ, $interval) {
+	function TrendsService(IntServ, $interval, $rootScope) {
 		cc = this;
 		cc.bufList = [];
 		cc.chList = [];
 		cc.selectedList = [];
 		cc.data = [];
 		cc.bufName = "";
+
+		cc.active = false;
 
 		cc.options = {
 			elements: {
@@ -121,6 +124,8 @@
 			cc.int = $interval(function () {
 				//cc.num = cc.num + 1;
 
+				cc.active = true;
+
 				IntServ.Custom(cc.url, req).then(function (response) {
 
 					cc.response = response.data;
@@ -145,14 +150,21 @@
 						channel.y.push(val);
 						channel.x.push(j / 2);
 
-						channel.options.title.text
+						//channel.options.title.text
+
+						//Canvas.Redraw();
 
 					});
+
+					$rootScope.$broadcast('redraw', {});
 
 
 				}, function () {
 					cc.response = "Какая-то ошибочка. Вернулся плохой или пустой ответ. Или не вернулся вообще.";
 				});
+
+
+
 
 				j++;
 
@@ -205,7 +217,7 @@
 
 
 				}, function () {
-					//cc.dbgStatus = "Какая-то ошибочка. Вернулся плохой или пустой ответ. Или не вернулся вообще.";
+					cc.dbgStatus = "Какая-то ошибочка. Вернулся плохой или пустой ответ. Или не вернулся вообще.";
 				});
 
 			}, 1000);
@@ -245,6 +257,9 @@
 		}
 
 		cc.stop = function stop() {
+
+			cc.active = false;
+
 			if (angular.isDefined(cc.int)) {
 
 				//console.log('Был экземпляр');
@@ -254,6 +269,114 @@
 			} else {
 				//console.log('не Было экземпляр');
 			}
+
+		}
+	}
+
+	function CanvasService(Trends) {
+		cs = this;
+		var canvas = null;
+		var ctx = null
+
+		var xx = 2.5;
+		var yy = 2.5;
+
+		var xMin = 0;
+		var xMax = 256;
+		var yMax = -1024;
+		var yMin = 1024;
+
+		var nPoints = 512;
+
+		cs.Point2D = function (x, y) {
+
+			if (x == null) {
+				x = 0;
+			}
+
+			if (y == null) {
+				y = 0;
+			}
+
+			if (x < xMin || x > xMax || y < yMin || y > yMax) {
+				x = NaN;
+				y = NaN;
+			}
+
+			var X = (x - xMin) * canvas.width / (xMax - xMin) + yy;
+			var Y = canvas.height - (y - yMin) * canvas.height / (yMax - yMin) - yy;
+
+			return {
+				"x": X,
+				"y": Y
+			};
+		}
+
+		cs.Redraw = function () {
+			canvasCont = document.getElementById("CanvasContainer");
+			canvas = document.getElementById("TrendCanvas");
+			ctx = canvas.getContext('2d');
+
+			canvas.width = Math.round(canvasCont.getBoundingClientRect().width);
+			canvas.height = Math.round(canvasCont.getBoundingClientRect().height);
+			
+			//if (!Trends.active) {
+				ctx.clearRect(0, 0, canvas.width, canvas.height);
+				ctx.strokeRect(xx, yy, canvas.width - xx * 2, canvas.height - yy * 2);
+				ctx.lineWidth = 1;
+			//}
+			
+
+
+			if (Trends.active) {
+				var channel = Trends.selectedList[0];
+
+				ctx.beginPath();
+				
+
+				channel.y.forEach(function(val,ii,arr){
+					if (val > yMax) {
+						yMax = val;
+					}
+	
+					if (val < yMin) {
+						yMin = val;
+					}
+	
+				});
+
+				
+
+				
+				console.log(yMax);
+				console.log(yMin);
+
+				var stPoint = cs.Point2D(channel.x[0], channel.y[0]);
+								
+				ctx.moveTo(stPoint.x, stPoint.y);
+
+				//console.log(stPoint);
+				
+				for (var i = 1; i < nPoints; i++) {
+
+					
+
+					var curPoint = cs.Point2D(channel.x[i], channel.y[i]);
+					ctx.lineTo(curPoint.x, curPoint.y);
+					//ctx.lineTo(i, 50);
+					
+
+					//console.log(curPoint);
+				}
+
+				ctx.lineWidth = 2;
+				ctx.stroke();
+
+				//console.log(canvas.height);
+
+			}
+
+
 
 		}
 	}
@@ -350,8 +473,11 @@
 
 
 
-	function ChartController(Trends) {
+	function ChartController(Trends, Canvas, $rootScope) {
+
+
 		Trends.checkBufStatus();
+		Canvas.Redraw();
 
 		this.selectBuffer = function selectBuffer(index) {
 			Trends.selectBuffer(index);
@@ -376,6 +502,11 @@
 		this.startTrends = function () {
 			Trends.start();
 		}
+
+		$rootScope.$on('redraw', function (event, data) {
+
+			Canvas.Redraw();
+		});
 
 
 	}

@@ -29,19 +29,22 @@
     </div>
 
     <div class="trends col-xs-12">
-        <canvas id="TrendCanvas"></canvas>
+        <div id="CanvasContainer">
+            <canvas id="TrendCanvas" width="300" height="300"></canvas>
+        </div>
+        
         
         
     </div>
 
-    <!--div class="col-xs-12">
+    <div class="col-xs-12">
         <hr />
         <pre>
-                {--{ Trends.selectedList | json }--}
+                {{ Trends.selectedList | json }}
             </pre>
         <pre>
-            {--{   Trends.response | json }--}
+                {{ Trends.response | json }}
         </pre>
-    </div> -->
+    </div>
 
 </div>
