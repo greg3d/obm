@@ -454,157 +454,6 @@
 })();
 ;
 (function () {
-    'use scrict';
-
-    AuthService.$inject = ["$http", "session", "$state"];
-    sessionService.$inject = ["$log", "localStorage"];
-    localStorageServiceFactory.$inject = ["$window"];
-    angular
-        .module('obm.auth', ['ui.router'])
-        .config(configAuth)
-        .service('auth', AuthService)
-        .service('session', sessionService)
-        .factory('localStorage', localStorageServiceFactory)
-        .run(assServToRootScope)
-
-    function assServToRootScope($rootScope, session, auth) {
-        $rootScope.auth = auth;
-        $rootScope.session = session;
-    }
-    assServToRootScope.$inject = ['$rootScope', 'session', 'auth'];
-
-    function localStorageServiceFactory($window) {
-        if ($window.localStorage) {
-            return $window.localStorage;
-        }
-        throw new Error('Local storage support is needed');
-    }
-
-    function sessionService($log, localStorage) {
-        this._user = JSON.parse(localStorage.getItem('session.user'));
-        this._accessToken = localStorage.getItem('session.accessToken');
-
-        this.getUser = function () {
-            //this._user = localStorage.getItem('session.user');
-            return this._user;
-        };
-
-        this.setUser = function (user) {
-            this._user = user;
-            localStorage.setItem('session.user', JSON.stringify(user));
-            return this;
-        };
-
-        this.getAccessToken = function () {
-            return this._accessToken;
-        };
-
-        this.setAccessToken = function (token) {
-            this._accessToken = token;
-            localStorage.setItem('session.accessToken', token);
-            return this;
-        };
-
-        this.destroy = function destroy() {
-            this.setUser(null);
-            this.setAccessToken(null);
-        };
-
-    }
-
-    function AuthService($http, session, $state) {
-        // Проверяем залогинен ли
-        this.isLoggedIn = function isLoggedIn() {
-            //console.log(session.getUser());
-            var vvv = session.getUser();
-            if (vvv == "null" || vvv == 'null' || vvv == null) {
-                return false;
-                //console.log('false');
-            } else {
-                return session.getUser() !== "null";
-            }
-
-        };
-
-        this.isAdmin = function isAdmin() {
-
-            //var uuu = session.getUser();
-            // var name = uuu.name;
-            // console.log(uuu + uuu.name);
-
-            return session.getUser().name == 'admin';
-
-
-        };
-
-
-        // Логин
-
-        this.logIn = function (uuu) {
-
-            return $http
-                .get(uuu + '.json')
-                //.post('/login.json',credentials)
-                .then(function (response) {
-                    console.log(response.data);
-                    var data = response.data;
-                    session.setUser(data.user);
-                    session.setAccessToken(data.accessToken);
-                    $state.go('home');
-                });
-        };
-
-        // log out
-
-        this.logOut = function () {
-            return $http
-                .get('/logout.json')
-                .then(function (response) {
-                    // убиваем сессию
-                    session.destroy();
-                    $state.go('login');
-                });
-        };
-    }
-
-
-    function configAuth() {
-
-    }
-
-})();
-;(function(){
-	'use scrict';
-
-		configDiag.$inject = ["$stateProvider"];
-		getTreeController.$inject = ["$scope", "$rootScope", "$document", "Notification"];
-	angular
-		.module('obm.diag', [
-			'ui.router',
-		])
-
-		.config(configDiag)
-		.controller('GetTreeCtrl', getTreeController)
-
-		function getTreeController($scope,$rootScope,$document,Notification){
-
-
-		}
-
-		function configDiag($stateProvider){
-
-			var mName = 'diag';
-			$stateProvider.state(mName, {
-				url: '/' + mName,
-				templateUrl: 'app/' + mName + '/index.html',
-				controller: 'GetTreeCtrl'
-			});
-		}
-
-
-})();
-;
-(function () {
 	'use scrict';
 
 	configAlarms.$inject = ["$stateProvider"];
@@ -791,6 +640,157 @@
 		});
 
 	}
+
+})();
+;
+(function () {
+    'use scrict';
+
+    AuthService.$inject = ["$http", "session", "$state"];
+    sessionService.$inject = ["$log", "localStorage"];
+    localStorageServiceFactory.$inject = ["$window"];
+    angular
+        .module('obm.auth', ['ui.router'])
+        .config(configAuth)
+        .service('auth', AuthService)
+        .service('session', sessionService)
+        .factory('localStorage', localStorageServiceFactory)
+        .run(assServToRootScope)
+
+    function assServToRootScope($rootScope, session, auth) {
+        $rootScope.auth = auth;
+        $rootScope.session = session;
+    }
+    assServToRootScope.$inject = ['$rootScope', 'session', 'auth'];
+
+    function localStorageServiceFactory($window) {
+        if ($window.localStorage) {
+            return $window.localStorage;
+        }
+        throw new Error('Local storage support is needed');
+    }
+
+    function sessionService($log, localStorage) {
+        this._user = JSON.parse(localStorage.getItem('session.user'));
+        this._accessToken = localStorage.getItem('session.accessToken');
+
+        this.getUser = function () {
+            //this._user = localStorage.getItem('session.user');
+            return this._user;
+        };
+
+        this.setUser = function (user) {
+            this._user = user;
+            localStorage.setItem('session.user', JSON.stringify(user));
+            return this;
+        };
+
+        this.getAccessToken = function () {
+            return this._accessToken;
+        };
+
+        this.setAccessToken = function (token) {
+            this._accessToken = token;
+            localStorage.setItem('session.accessToken', token);
+            return this;
+        };
+
+        this.destroy = function destroy() {
+            this.setUser(null);
+            this.setAccessToken(null);
+        };
+
+    }
+
+    function AuthService($http, session, $state) {
+        // Проверяем залогинен ли
+        this.isLoggedIn = function isLoggedIn() {
+            //console.log(session.getUser());
+            var vvv = session.getUser();
+            if (vvv == "null" || vvv == 'null' || vvv == null) {
+                return false;
+                //console.log('false');
+            } else {
+                return session.getUser() !== "null";
+            }
+
+        };
+
+        this.isAdmin = function isAdmin() {
+
+            //var uuu = session.getUser();
+            // var name = uuu.name;
+            // console.log(uuu + uuu.name);
+
+            return session.getUser().name == 'admin';
+
+
+        };
+
+
+        // Логин
+
+        this.logIn = function (uuu) {
+
+            return $http
+                .get(uuu + '.json')
+                //.post('/login.json',credentials)
+                .then(function (response) {
+                    console.log(response.data);
+                    var data = response.data;
+                    session.setUser(data.user);
+                    session.setAccessToken(data.accessToken);
+                    $state.go('home');
+                });
+        };
+
+        // log out
+
+        this.logOut = function () {
+            return $http
+                .get('/logout.json')
+                .then(function (response) {
+                    // убиваем сессию
+                    session.destroy();
+                    $state.go('login');
+                });
+        };
+    }
+
+
+    function configAuth() {
+
+    }
+
+})();
+;(function(){
+	'use scrict';
+
+		configDiag.$inject = ["$stateProvider"];
+		getTreeController.$inject = ["$scope", "$rootScope", "$document", "Notification"];
+	angular
+		.module('obm.diag', [
+			'ui.router',
+		])
+
+		.config(configDiag)
+		.controller('GetTreeCtrl', getTreeController)
+
+		function getTreeController($scope,$rootScope,$document,Notification){
+
+
+		}
+
+		function configDiag($stateProvider){
+
+			var mName = 'diag';
+			$stateProvider.state(mName, {
+				url: '/' + mName,
+				templateUrl: 'app/' + mName + '/index.html',
+				controller: 'GetTreeCtrl'
+			});
+		}
+
 
 })();
 ;
@@ -2136,8 +2136,8 @@
 
 					var ch = channel;
 					ch.index = index;
-					ch.x = new Array(512);
-					ch.y = new Array(512);
+					ch.x = new Array(300);
+					ch.y = new Array(300);
 
 					var opts = JSON.parse(JSON.stringify(cc.options));
 					ch.options = opts;
@@ -2168,11 +2168,7 @@
 
 					cc.selectedList.forEach(function (channel, index) {
 						var i = channel.index;
-						channel.x.shift();
-						channel.y.shift();
-
 						var val = 0;
-
 
 						if (channel.type.indexOf('real', 0) >= 0) {
 							//console.log(channel.type);
@@ -2181,11 +2177,29 @@
 							val = cc.data[i];
 						}
 
-						channel.y.push(val);
-						channel.x.push(j / 2);
+						var n = channel.x.length;
+
+						var oldY = channel.y.slice();
+						var oldX = channel.x.slice();
+
+						for (var jjj = n - 2; jjj >= 0; jjj--) {
+
+							channel.y[jjj] = oldY[jjj + 1];
+							channel.x[jjj] = oldX[jjj + 1];
+
+							if (channel.x[jjj] == NaN) {
+								channel.x[jjj] = j;
+							}
+
+							if (channel.y[jjj] == NaN) {
+								channel.y[jjj] = val;
+							}
+						}
+
+						channel.y[n - 1] = val;
+						channel.x[n - 1] = j;
 
 						//channel.options.title.text
-
 						//Canvas.Redraw();
 
 					});
@@ -2202,7 +2216,7 @@
 
 				j++;
 
-			}, 500);
+			}, 1000);
 
 		}
 
@@ -2313,32 +2327,46 @@
 		var ctx = null
 
 		var xx = 2.5;
+		var leftMargin = 0;
+		var bottomMargin = 30;
+		var rightMargin = 40;
 		var yy = 2.5;
 
+		var plotHeight = 170; //px
+
 		var xMin = 0;
-		var xMax = 256;
-		var yMax = -1024;
-		var yMin = 1024;
+		var xMax = 300;
+		var yMax = -1024000;
+		var yMin = 1024000;
 
-		var nPoints = 512;
+		var nPoints = 300;
 
-		cs.Point2D = function (x, y) {
+		var numberOfPlots = 1;
+
+		plots = [];
+
+		var colors = ['darkred', 'darkblue', 'darkgreen', 'black'];
+
+		var Point2D = function (curPlot, x, y) {
+
+
 
 			if (x == null) {
-				x = 0;
+				x = NaN;
 			}
 
 			if (y == null) {
-				y = 0;
-			}
-
-			if (x < xMin || x > xMax || y < yMin || y > yMax) {
-				x = NaN;
 				y = NaN;
 			}
 
-			var X = (x - xMin) * canvas.width / (xMax - xMin) + yy;
-			var Y = canvas.height - (y - yMin) * canvas.height / (yMax - yMin) - yy;
+			/*
+			if (x < xMin || x > xMax || y < curPlot.yMin || y > curPlot.yMax) {
+				x = NaN;
+				y = NaN;
+			}*/
+
+			var X = curPlot.x1 + (x - curPlot.xMin) * (curPlot.x2 - curPlot.x1) / (curPlot.xMax - curPlot.xMin);
+			var Y = curPlot.y2 - (y - curPlot.yMin) * (curPlot.y2 - curPlot.y1) / (curPlot.yMax - curPlot.yMin);
 
 			return {
 				"x": X,
@@ -2351,161 +2379,100 @@
 			canvas = document.getElementById("TrendCanvas");
 			ctx = canvas.getContext('2d');
 
-			canvas.width = Math.round(canvasCont.getBoundingClientRect().width);
-			canvas.height = Math.round(canvasCont.getBoundingClientRect().height);
-			
-			//if (!Trends.active) {
-				ctx.clearRect(0, 0, canvas.width, canvas.height);
-				ctx.strokeRect(xx, yy, canvas.width - xx * 2, canvas.height - yy * 2);
-				ctx.lineWidth = 1;
-			//}
-			
-
-
 			if (Trends.active) {
-				var channel = Trends.selectedList[0];
 
-				ctx.beginPath();
-				
+				numberOfPlots = Trends.selectedList.length;
 
-				channel.y.forEach(function(val,ii,arr){
-					if (val > yMax) {
-						yMax = val;
+				canvas.width = Math.round(canvasCont.getBoundingClientRect().width);
+				canvas.height = numberOfPlots * (plotHeight) + yy;
+
+				ctx.clearRect(0, 0, canvas.width, canvas.height);
+
+				ctx.lineWidth = 1;
+
+				kk = 0;
+
+				for (var i = 0; i < numberOfPlots; i++) {
+
+					var f = 0;
+					if (i > 0) {
+						f = 1;
 					}
-	
-					if (val < yMin) {
-						yMin = val;
+
+					curPlot = {
+						x1: xx + leftMargin,
+						y1: yy + i * plotHeight,
+						x2: canvas.width - xx - rightMargin,
+						y2: yy + i * plotHeight + plotHeight - bottomMargin,
+						yMin: yMin,
+						yMax: yMax,
 					}
-	
-				});
+					ctx.lineWidth = 1;
+					ctx.strokeStyle = "#000000";
+					ctx.strokeRect(curPlot.x1, curPlot.y1, curPlot.x2 - curPlot.x1, curPlot.y2 - curPlot.y1);
 
-				
+					var channel = Trends.selectedList[i];
 
-				
-				console.log(yMax);
-				console.log(yMin);
+					//ctx.lineWidth = 2;
 
-				var stPoint = cs.Point2D(channel.x[0], channel.y[0]);
-								
-				ctx.moveTo(stPoint.x, stPoint.y);
+					channel.y.forEach(function (val, k, arr) {
+						if (val > curPlot.yMax) {
+							curPlot.yMax = val;
+						}
 
-				//console.log(stPoint);
-				
-				for (var i = 1; i < nPoints; i++) {
+						if (val < curPlot.yMin) {
+							curPlot.yMin = val;
+						}
 
-					
+						if (curPlot.yMax == curPlot.yMin) {
+							curPlot.yMax = curPlot.yMax + 1;
+							curPlot.yMin = curPlot.yMin - 1;
+						}
 
-					var curPoint = cs.Point2D(channel.x[i], channel.y[i]);
-					ctx.lineTo(curPoint.x, curPoint.y);
-					//ctx.lineTo(i, 50);
-					
+					});
 
-					//console.log(curPoint);
+					curPlot.xMax = channel.x[nPoints - 1];
+					curPlot.xMin = curPlot.xMax - xMax;
+
+					// ticks and grid
+					var tickGap = 10;
+					var tnum = xMax / tickGap;
+
+					for (var k = curPlot.xMin + tickGap; k < curPlot.xMax; k = k + tickGap) {
+						ctx.beginPath();
+						ctx.strokeStyle = "#CCC";
+						
+						var tickPoint=Point2D(curPlot,k,0);
+
+						ctx.moveTo(tickPoint.x, curPlot.y2-2);
+						ctx.lineTo(tickPoint.x, curPlot.y1+2);
+						ctx.stroke();
+					}
+
+					var stPoint = Point2D(curPlot, channel.x[nPoints - 1], channel.y[nPoints - 1]);
+
+					ctx.beginPath();
+					ctx.strokeStyle = colors[kk];
+					kk++;
+					if (kk >= colors.length) {
+						kk = 0;
+					}
+
+					ctx.moveTo(stPoint.x, stPoint.y);
+
+					for (var j = nPoints - 2; j >= 0; j--) {
+						var curPoint = Point2D(curPlot, channel.x[j], channel.y[j]);
+						ctx.lineTo(curPoint.x, curPoint.y);
+					}
+
+					ctx.stroke();
+
 				}
 
-				ctx.lineWidth = 2;
-				ctx.stroke();
-
-				//console.log(canvas.height);
-
 			}
-
-
 
 		}
 	}
-
-
-	/*function DebugController(IntServ, $interval) {
-
-		var dbc = this;
-
-		if (angular.isDefined(dbc.int1)) {
-
-		} else {
-			dbc.int1 = undefined;
-			dbc.num = 0;
-
-
-			dbc.dbgStatus = "";
-			dbc.dbgRequest = "";
-
-			dbc.dbgUrl = 'readbufs';
-			dbc.dbgAction = 'get';
-			dbc.dbgType = 'data';
-			dbc.dbgName = 'MWAY';
-
-
-			dbc.once = function once() {
-				dbc.num = 0;
-				dbc.stop();
-
-				var url = dbc.dbgUrl;
-				var action = dbc.dbgAction;
-				var type = dbc.dbgType;
-				var name = dbc.dbgName;
-
-				var req = JSON.stringify({
-					"action": action,
-					"type": type,
-					"name": name
-				});
-
-				dbc.dbgRequest = JSON.parse(req);
-
-				IntServ.Custom(url, req).then(function (response) {
-					dbc.dbgStatus = response.data;
-				}, function (resp) {
-					dbc.dbgStatus = "Какая-то ошибочка. Вернулся плохой или пустой ответ. Или не вернулся вообще. " + resp.data;
-				});
-			}
-
-			dbc.interval = function interval() {
-				dbc.num = 0;
-				dbc.stop();
-
-				var url = dbc.dbgUrl;
-				var action = dbc.dbgAction;
-				var type = dbc.dbgType;
-				var name = dbc.dbgName;
-
-				var req = JSON.stringify({
-					"action": action,
-					"type": type,
-					"name": name
-				});
-
-				dbc.int1 = $interval(function () {
-					dbc.num = dbc.num + 1;
-					IntServ.Custom(url, req).then(function (response) {
-						dbc.dbgStatus = response.data;
-					}, function () {
-						dbc.dbgStatus = "Какая-то ошибочка. Вернулся плохой или пустой ответ. Или не вернулся вообще.";
-					});
-
-
-
-				}, 1000);
-
-			}
-
-			dbc.stop = function stop() {
-				if (angular.isDefined(dbc.int1)) {
-
-					console.log(dbc.int1);
-
-					$interval.cancel(dbc.int1);
-					dbc.int1 = undefined;
-				}
-			}
-
-
-		}
-
-
-	}*/
-
-
 
 	function ChartController(Trends, Canvas, $rootScope) {
 
