@@ -1,4 +1,4 @@
-# obm v0.9.5a
+# obm v0.9.6
 OBM Controlsystem web application
 Gregory Rozenbaum
 
@@ -24,6 +24,7 @@ gulp prod
 ```
 
 # Changlelog
+v0.9.6beta: Charts upgraded. Not using Chart.js anymore. Pure canvas.
 v0.9.5a: Charts added. Alpha version
 v0.9.3: Translation corrections
 v0.9.2: Settings tags sorting, translation of accelerometer settings
