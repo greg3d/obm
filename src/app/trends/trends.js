@@ -5,23 +5,26 @@
 	angular
 		.module('obm.trends', [
 			'ui.router',
-			'chart.js',
+			//'chart.js',
 		])
 
 		.config(configTrends)
-		.controller('LineCtrl', LineController)
-		.controller('DbgCtrl', DebugController)
+		//.controller('LineCtrl', LineController)
+		//.controller('DbgCtrl', DebugController)
 		.controller('ChCtrl', ChartController)
 		.service('Trends', TrendsService)
+		.service('Canvas', CanvasService)
 		.run(runTrends)
 
-	function TrendsService(IntServ, $interval) {
+	function TrendsService(IntServ, $interval, $rootScope) {
 		cc = this;
 		cc.bufList = [];
 		cc.chList = [];
 		cc.selectedList = [];
 		cc.data = [];
 		cc.bufName = "";
+
+		cc.active = false;
 
 		cc.options = {
 			elements: {
@@ -99,8 +102,8 @@
 
 					var ch = channel;
 					ch.index = index;
-					ch.x = new Array(512);
-					ch.y = new Array(512);
+					ch.x = new Array(300);
+					ch.y = new Array(300);
 
 					var opts = JSON.parse(JSON.stringify(cc.options));
 					ch.options = opts;
@@ -121,6 +124,8 @@
 			cc.int = $interval(function () {
 				//cc.num = cc.num + 1;
 
+				cc.active = true;
+
 				IntServ.Custom(cc.url, req).then(function (response) {
 
 					cc.response = response.data;
@@ -129,25 +134,43 @@
 
 					cc.selectedList.forEach(function (channel, index) {
 						var i = channel.index;
-						channel.x.shift();
-						channel.y.shift();
-
 						var val = 0;
 
-						
 						if (channel.type.indexOf('real', 0) >= 0) {
 							//console.log(channel.type);
-							val = Math.round(cc.data[i]*100)/100;
+							val = Math.round(cc.data[i] * 100) / 100;
 						} else {
 							val = cc.data[i];
 						}
 
-						channel.y.push(val);
-						channel.x.push(j / 2);
+						var n = channel.x.length;
 
-						channel.options.title.text
+						var oldY = channel.y.slice();
+						var oldX = channel.x.slice();
+
+						for (var jjj = n - 2; jjj >= 0; jjj--) {
+
+							channel.y[jjj] = oldY[jjj + 1];
+							channel.x[jjj] = oldX[jjj + 1];
+
+							if (channel.x[jjj] == NaN) {
+								channel.x[jjj] = j;
+							}
+
+							if (channel.y[jjj] == NaN) {
+								channel.y[jjj] = val;
+							}
+						}
+
+						channel.y[n - 1] = val;
+						channel.x[n - 1] = j;
+
+						//channel.options.title.text
+						//Canvas.Redraw();
 
 					});
+
+					$rootScope.$broadcast('redraw', {});
 
 
 				}, function () {
@@ -156,7 +179,7 @@
 
 				j++;
 
-			}, 500);
+			}, 1000);
 
 		}
 
@@ -176,8 +199,6 @@
 
 				IntServ.Custom(cc.url, req).then(function (response) {
 					var res = response.data.readbufs.list;
-
-
 
 					var _bufList = [];
 					res.forEach(function (element, index) {
@@ -205,7 +226,7 @@
 
 
 				}, function () {
-					//cc.dbgStatus = "Какая-то ошибочка. Вернулся плохой или пустой ответ. Или не вернулся вообще.";
+					cc.dbgStatus = "Какая-то ошибочка. Вернулся плохой или пустой ответ. Или не вернулся вообще.";
 				});
 
 			}, 1000);
@@ -245,6 +266,9 @@
 		}
 
 		cc.stop = function stop() {
+
+			cc.active = false;
+
 			if (angular.isDefined(cc.int)) {
 
 				//console.log('Был экземпляр');
@@ -258,100 +282,230 @@
 		}
 	}
 
+	function CanvasService(Trends) {
+		cs = this;
 
-	function DebugController(IntServ, $interval) {
+		var canvasCont = document.getElementById("CanvasContainer");
+		var canvas = document.getElementById("TrendCanvas");
+		var ctx = canvas.getContext('2d');
 
-		var dbc = this;
+		var xx = 2.5;
+		var leftMargin = 0;
+		var bottomMargin = 28;
+		var topMargin = 5;
+		var rightMargin = 50;
+		var yy = 2.5;
 
-		if (angular.isDefined(dbc.int1)) {
+		var plotHeight = 170; //px
 
-		} else {
-			dbc.int1 = undefined;
-			dbc.num = 0;
+		var xMin = 0;
+		var xMax = 300;
+		var yMax = -1e9;
+		var yMin = 1e9;
+
+		var nPoints = 300;
+
+		var numberOfPlots = 1;
+
+		plots = [];
+
+		var colors = ['darkred', 'darkblue', 'darkgreen', 'black'];
+
+		var Point2D = function (curPlot, x, y) {
 
 
-			dbc.dbgStatus = "";
-			dbc.dbgRequest = "";
 
-			dbc.dbgUrl = 'readbufs';
-			dbc.dbgAction = 'get';
-			dbc.dbgType = 'data';
-			dbc.dbgName = 'MWAY';
-
-
-			dbc.once = function once() {
-				dbc.num = 0;
-				dbc.stop();
-
-				var url = dbc.dbgUrl;
-				var action = dbc.dbgAction;
-				var type = dbc.dbgType;
-				var name = dbc.dbgName;
-
-				var req = JSON.stringify({
-					"action": action,
-					"type": type,
-					"name": name
-				});
-
-				dbc.dbgRequest = JSON.parse(req);
-
-				IntServ.Custom(url, req).then(function (response) {
-					dbc.dbgStatus = response.data;
-				}, function (resp) {
-					dbc.dbgStatus = "Какая-то ошибочка. Вернулся плохой или пустой ответ. Или не вернулся вообще. " + resp.data;
-				});
+			if (x == null) {
+				x = NaN;
 			}
 
-			dbc.interval = function interval() {
-				dbc.num = 0;
-				dbc.stop();
-
-				var url = dbc.dbgUrl;
-				var action = dbc.dbgAction;
-				var type = dbc.dbgType;
-				var name = dbc.dbgName;
-
-				var req = JSON.stringify({
-					"action": action,
-					"type": type,
-					"name": name
-				});
-
-				dbc.int1 = $interval(function () {
-					dbc.num = dbc.num + 1;
-					IntServ.Custom(url, req).then(function (response) {
-						dbc.dbgStatus = response.data;
-					}, function () {
-						dbc.dbgStatus = "Какая-то ошибочка. Вернулся плохой или пустой ответ. Или не вернулся вообще.";
-					});
-
-
-
-				}, 1000);
-
+			if (y == null) {
+				y = NaN;
 			}
 
-			dbc.stop = function stop() {
-				if (angular.isDefined(dbc.int1)) {
+			/*
+			if (x < xMin || x > xMax || y < curPlot.yMin || y > curPlot.yMax) {
+				x = NaN;
+				y = NaN;
+			}*/
 
-					console.log(dbc.int1);
+			var X = curPlot.x1 + (x - curPlot.xMin) * (curPlot.x2 - curPlot.x1) / (curPlot.xMax - curPlot.xMin);
+			var Y = curPlot.y2 - (y - curPlot.yMin) * (curPlot.y2 - curPlot.y1) / (curPlot.yMax - curPlot.yMin);
 
-					$interval.cancel(dbc.int1);
-					dbc.int1 = undefined;
-				}
-			}
-
-
+			return {
+				"x": X,
+				"y": Y
+			};
 		}
 
+		cs.Redraw = function () {
 
+			if (Trends.active) {
+
+				numberOfPlots = Trends.selectedList.length;
+				canvas.width = Math.round(canvasCont.getBoundingClientRect().width);
+				canvas.height = numberOfPlots * (plotHeight) + yy;
+				ctx.clearRect(0, 0, canvas.width, canvas.height);
+				ctx.lineWidth = 1;
+
+				kk = 0;
+
+				for (var i = 0; i < numberOfPlots; i++) {
+
+					/*
+					var f = 0;
+					if (i > 0) {
+						f = 1;
+					}*/
+
+					var curPlot = {
+						x1: xx + leftMargin,
+						y1: yy + i * plotHeight + topMargin,
+						x2: canvas.width - xx - rightMargin,
+						y2: yy + i * plotHeight + plotHeight - bottomMargin,
+						yMin: yMin,
+						yMax: yMax,
+					}
+					ctx.lineWidth = 1;
+					ctx.strokeStyle = "#000000";
+					ctx.strokeRect(curPlot.x1, curPlot.y1, curPlot.x2 - curPlot.x1, curPlot.y2 - curPlot.y1);
+
+					var channel = Trends.selectedList[i];
+
+					//ctx.lineWidth = 2;
+
+					channel.y.forEach(function (val, k, arr) {
+						if (val > curPlot.yMax) {
+							curPlot.yMax = val;
+						}
+
+						if (val < curPlot.yMin) {
+							curPlot.yMin = val;
+						}
+
+						if (curPlot.yMax == curPlot.yMin) {
+							curPlot.yMax = curPlot.yMax + 1;
+							curPlot.yMin = curPlot.yMin - 1;
+						}
+
+					});
+
+					curPlot.xMax = channel.x[nPoints - 1];
+					curPlot.xMin = curPlot.xMax - xMax;
+
+					// ticks and grid
+					var tickGap = 30; //sec
+					var tnum = xMax / tickGap;
+
+					for (var k = curPlot.xMin + tickGap; k < curPlot.xMax; k = k + tickGap) {
+						ctx.beginPath();
+						ctx.strokeStyle = "#CCC";
+
+						var tickPoint = Point2D(curPlot, k, 0);
+
+						ctx.moveTo(tickPoint.x, curPlot.y2 - 2);
+						ctx.lineTo(tickPoint.x, curPlot.y1 + 2);
+						ctx.stroke();
+
+						ctx.fillStyle = "#000";
+						ctx.font = "12px Arial";
+						ctx.textAlign = "center";
+						ctx.textBaseline = "alphabetic";
+						ctx.fillText(k, tickPoint.x, curPlot.y2 + bottomMargin / 2);
+					}
+
+					// крайний нижний тик справа
+					ctx.textAlign = "center";
+					ctx.textBaseline = "alphabetic";
+					ctx.fillText(curPlot.xMax, curPlot.x2, curPlot.y2 + bottomMargin / 2);
+
+					// расчет тиков для Y
+					var realPlotHeight = curPlot.y2 - curPlot.y1;
+					var yTickCount = Math.ceil(realPlotHeight / 30);
+
+					var yTickGap = (curPlot.yMax - curPlot.yMin) / yTickCount;
+					var realYTickGap = 1.0e+020;
+					while (realYTickGap > yTickGap) {
+						realYTickGap = realYTickGap / 10;
+					}
+
+					realYTickGap = realYTickGap * 10;
+
+					if (realYTickGap > (curPlot.yMax - curPlot.yMin)) {
+						realYTickGap = realYTickGap / 2;
+					}
+
+					var minYTick = Math.floor(curPlot.yMin / realYTickGap) * realYTickGap;
+
+					for (var k = minYTick + realYTickGap; k < curPlot.yMax; k = k + realYTickGap) {
+						ctx.beginPath();
+						ctx.strokeStyle = "#CCC";
+
+						var tickPoint = Point2D(curPlot, channel.y[nPoints - 1], k);
+
+						ctx.moveTo(curPlot.x1 + 1, tickPoint.y);
+						ctx.lineTo(curPlot.x2 - 1, tickPoint.y);
+						ctx.stroke();
+
+						ctx.fillStyle = "#CCC";
+						ctx.textAlign = "left";
+						ctx.textBaseline = "middle";
+						ctx.font = "10px Arial";
+						ctx.fillText(k, curPlot.x2 + 4, tickPoint.y);
+					}
+
+					// yMax и yMin
+					ctx.fillStyle = "#000";
+					ctx.textAlign = "left";
+					ctx.textBaseline = "middle";
+					ctx.font = "10px Arial";
+					ctx.fillText(curPlot.yMax, curPlot.x2 + 4, curPlot.y1);
+					ctx.fillText(curPlot.yMin, curPlot.x2 + 4, curPlot.y2);
+					
+					// текущее значение
+					ctx.fillStyle = "#eee";
+					ctx.fillRect(curPlot.x1 + 1, curPlot.y1 + 1 , 150, 22);
+					ctx.fillStyle = "#000";
+					ctx.textAlign = "left";
+					ctx.textBaseline = "top";
+					ctx.font = "14px Arial";
+					ctx.fillText(channel.name + ": " + channel.y[nPoints - 1], curPlot.x1 + 4, curPlot.y1 + 4);
+
+
+					//console.log("real tick gap: " + realYTickGap + "   minYTick: " + minYTick + "   Amplitude: " + (curPlot.yMax - curPlot.yMin) + "   max and min: " + curPlot.yMax + " " + curPlot.yMin);
+
+					// Drawing plot 
+
+					var stPoint = Point2D(curPlot, channel.x[nPoints - 1], channel.y[nPoints - 1]);
+
+					ctx.beginPath();
+					ctx.strokeStyle = colors[kk];
+					kk++;
+					if (kk >= colors.length) {
+						kk = 0;
+					}
+
+					ctx.moveTo(stPoint.x, stPoint.y);
+
+					for (var j = nPoints - 2; j >= 0; j--) {
+						var curPoint = Point2D(curPlot, channel.x[j], channel.y[j]);
+						ctx.lineTo(curPoint.x, curPoint.y);
+					}
+
+					ctx.stroke();
+
+				}
+
+			}
+
+		}
 	}
 
+	function ChartController(Trends, Canvas, $rootScope) {
 
 
-	function ChartController(Trends) {
 		Trends.checkBufStatus();
+		Canvas.Redraw();
 
 		this.selectBuffer = function selectBuffer(index) {
 			Trends.selectBuffer(index);
@@ -377,53 +531,18 @@
 			Trends.start();
 		}
 
+		$rootScope.$on('redraw', function (event, data) {
 
-	}
-
-	function LineController($scope) {
-
-		/*
-
-				Chart.defaults.global.animation.easing = 'linear';
-				Chart.defaults.global.animation.duration = 0;
-
-
-			$scope.series = ['Series A'];
-
-			$scope.labels = dataAcq.datax;
-		  $scope.data = dataAcq.datay;
-		  $scope.onClick = function (points, evt) {
-		    console.log(points, evt);
-		  };
-		  $scope.datasetOverride = {
-		  	yAxisID: 'y-axis-1',
-		  	fill: false,
-		  	lineTension: 0,
-		  	borderColor: '#000',
-		  	pointRadius: 0,
-
-		  };
-		  $scope.options = {
-
-		    scales: {
-		      yAxes: [
-		        {
-		          id: 'y-axis-1',
-		          type: 'linear',
-		          display: true,
-		          position: 'left'
-		        }
-		      ]
-		    }
-		  };*/
-	}
-
-	function configTrends($stateProvider, ChartJsProvider) {
-		var mName = 'trends';
-		ChartJsProvider.setOptions({
-			colors: ['#000000', '#000000'],
-
+			Canvas.Redraw();
 		});
+
+
+	}
+
+
+
+	function configTrends($stateProvider) {
+		var mName = 'trends';
 
 		$stateProvider.state(mName, {
 			url: '/' + mName,
