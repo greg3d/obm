@@ -177,9 +177,6 @@
 					cc.response = "Какая-то ошибочка. Вернулся плохой или пустой ответ. Или не вернулся вообще.";
 				});
 
-
-
-
 				j++;
 
 			}, 1000);
@@ -202,8 +199,6 @@
 
 				IntServ.Custom(cc.url, req).then(function (response) {
 					var res = response.data.readbufs.list;
-
-
 
 					var _bufList = [];
 					res.forEach(function (element, index) {
@@ -289,21 +284,24 @@
 
 	function CanvasService(Trends) {
 		cs = this;
-		var canvas = null;
-		var ctx = null
+
+		var canvasCont = document.getElementById("CanvasContainer");
+		var canvas = document.getElementById("TrendCanvas");
+		var ctx = canvas.getContext('2d');
 
 		var xx = 2.5;
 		var leftMargin = 0;
-		var bottomMargin = 30;
-		var rightMargin = 40;
+		var bottomMargin = 28;
+		var topMargin = 5;
+		var rightMargin = 50;
 		var yy = 2.5;
 
 		var plotHeight = 170; //px
 
 		var xMin = 0;
 		var xMax = 300;
-		var yMax = -1024000;
-		var yMin = 1024000;
+		var yMax = -1e9;
+		var yMin = 1e9;
 
 		var nPoints = 300;
 
@@ -341,33 +339,28 @@
 		}
 
 		cs.Redraw = function () {
-			canvasCont = document.getElementById("CanvasContainer");
-			canvas = document.getElementById("TrendCanvas");
-			ctx = canvas.getContext('2d');
 
 			if (Trends.active) {
 
 				numberOfPlots = Trends.selectedList.length;
-
 				canvas.width = Math.round(canvasCont.getBoundingClientRect().width);
 				canvas.height = numberOfPlots * (plotHeight) + yy;
-
 				ctx.clearRect(0, 0, canvas.width, canvas.height);
-
 				ctx.lineWidth = 1;
 
 				kk = 0;
 
 				for (var i = 0; i < numberOfPlots; i++) {
 
+					/*
 					var f = 0;
 					if (i > 0) {
 						f = 1;
-					}
+					}*/
 
-					curPlot = {
+					var curPlot = {
 						x1: xx + leftMargin,
-						y1: yy + i * plotHeight,
+						y1: yy + i * plotHeight + topMargin,
 						x2: canvas.width - xx - rightMargin,
 						y2: yy + i * plotHeight + plotHeight - bottomMargin,
 						yMin: yMin,
@@ -401,23 +394,87 @@
 					curPlot.xMin = curPlot.xMax - xMax;
 
 					// ticks and grid
-					var tickGap = 30;
+					var tickGap = 30; //sec
 					var tnum = xMax / tickGap;
 
 					for (var k = curPlot.xMin + tickGap; k < curPlot.xMax; k = k + tickGap) {
 						ctx.beginPath();
 						ctx.strokeStyle = "#CCC";
-						
-						var tickPoint=Point2D(curPlot,k,0);
 
-						ctx.moveTo(tickPoint.x, curPlot.y2-2);
-						ctx.lineTo(tickPoint.x, curPlot.y1+2);
+						var tickPoint = Point2D(curPlot, k, 0);
+
+						ctx.moveTo(tickPoint.x, curPlot.y2 - 2);
+						ctx.lineTo(tickPoint.x, curPlot.y1 + 2);
 						ctx.stroke();
+
+						ctx.fillStyle = "#000";
+						ctx.font = "12px Arial";
+						ctx.textAlign = "center";
+						ctx.textBaseline = "alphabetic";
+						ctx.fillText(k, tickPoint.x, curPlot.y2 + bottomMargin / 2);
 					}
 
-					(curPlot.yMax-curPlot.yMin)/
+					// крайний нижний тик справа
+					ctx.textAlign = "center";
+					ctx.textBaseline = "alphabetic";
+					ctx.fillText(curPlot.xMax, curPlot.x2, curPlot.y2 + bottomMargin / 2);
 
-					// 
+					// расчет тиков для Y
+					var realPlotHeight = curPlot.y2 - curPlot.y1;
+					var yTickCount = Math.ceil(realPlotHeight / 30);
+
+					var yTickGap = (curPlot.yMax - curPlot.yMin) / yTickCount;
+					var realYTickGap = 1.0e+020;
+					while (realYTickGap > yTickGap) {
+						realYTickGap = realYTickGap / 10;
+					}
+
+					realYTickGap = realYTickGap * 10;
+
+					if (realYTickGap > (curPlot.yMax - curPlot.yMin)) {
+						realYTickGap = realYTickGap / 2;
+					}
+
+					var minYTick = Math.floor(curPlot.yMin / realYTickGap) * realYTickGap;
+
+					for (var k = minYTick + realYTickGap; k < curPlot.yMax; k = k + realYTickGap) {
+						ctx.beginPath();
+						ctx.strokeStyle = "#CCC";
+
+						var tickPoint = Point2D(curPlot, channel.y[nPoints - 1], k);
+
+						ctx.moveTo(curPlot.x1 + 1, tickPoint.y);
+						ctx.lineTo(curPlot.x2 - 1, tickPoint.y);
+						ctx.stroke();
+
+						ctx.fillStyle = "#CCC";
+						ctx.textAlign = "left";
+						ctx.textBaseline = "middle";
+						ctx.font = "10px Arial";
+						ctx.fillText(k, curPlot.x2 + 4, tickPoint.y);
+					}
+
+					// yMax и yMin
+					ctx.fillStyle = "#000";
+					ctx.textAlign = "left";
+					ctx.textBaseline = "middle";
+					ctx.font = "10px Arial";
+					ctx.fillText(curPlot.yMax, curPlot.x2 + 4, curPlot.y1);
+					ctx.fillText(curPlot.yMin, curPlot.x2 + 4, curPlot.y2);
+					
+					// текущее значение
+					ctx.fillStyle = "#eee";
+					ctx.fillRect(curPlot.x1 + 1, curPlot.y1 + 1 , 150, 22);
+					ctx.fillStyle = "#000";
+					ctx.textAlign = "left";
+					ctx.textBaseline = "top";
+					ctx.font = "14px Arial";
+					ctx.fillText(channel.name + ": " + channel.y[nPoints - 1], curPlot.x1 + 4, curPlot.y1 + 4);
+
+
+					//console.log("real tick gap: " + realYTickGap + "   minYTick: " + minYTick + "   Amplitude: " + (curPlot.yMax - curPlot.yMin) + "   max and min: " + curPlot.yMax + " " + curPlot.yMin);
+
+					// Drawing plot 
 
 					var stPoint = Point2D(curPlot, channel.x[nPoints - 1], channel.y[nPoints - 1]);
 

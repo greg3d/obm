@@ -60,7 +60,7 @@ function js() {
 		])
 		.pipe(ngAnnotate())
 		.pipe(plumber())
-		//.pipe(gulpif(prodMode, uglify()))
+		.pipe(gulpif(prodMode, uglify()))
 		.pipe(concat('app.js'))
 		.pipe(dest(destt))
 }
