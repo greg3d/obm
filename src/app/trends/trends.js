@@ -366,6 +366,7 @@
 						yMin: yMin,
 						yMax: yMax,
 					}
+					
 					ctx.lineWidth = 1;
 					ctx.strokeStyle = "#000000";
 					ctx.strokeRect(curPlot.x1, curPlot.y1, curPlot.x2 - curPlot.x1, curPlot.y2 - curPlot.y1);
