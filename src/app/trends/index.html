@@ -1,40 +1,44 @@
 <div ng-controller="ChCtrl as cc" class="row">
 
-    <div class="col-xs-12">
-        <p>Select buffer: </p>
-        <div class="buffer-buttons btn-group ">
+    <div class="col-xs-4">
+        <h4>1. Select Buffer</h4>
+        <div class="buffer-buttons">
             <button ng-repeat="item in Trends.bufList" class="btn btn-primary" type="submit" ng-disabled="item.disabled"
                 ng-click="cc.selectBuffer($index)">
                 {{ item.name }}
             </button>
         </div>
-        <hr />
     </div>
 
-    <div class="channels col-xs-6" ng-show="Trends.showChList">
-        <div ng-repeat="channel in Trends.chList">
-            <div class="btn-group">
-                <button class="btn btn-sm btn-default" ng-class="{'btn-success':channel.selected}">&nbsp;</button>
-                <button class="btn btn-default btn-sm" ng-class="{'active':channel.selected}"
-                    ng-click="cc.selectChannel($index)"><strong>{{ channel.name }}</strong>
-                    ({{ channel.type }})</button>
+    <div class="channels col-xs-4">
+            <h4>2. Select channels</h4>
+        <div ng-show="Trends.showChList">
+            <div ng-repeat="channel in Trends.chList">
+                <div class="btn-group">
+                    <button class="btn btn-sm btn-default" ng-class="{'btn-success':channel.selected}">&nbsp;</button>
+                    <button class="btn btn-default btn-sm" ng-class="{'active':channel.selected}"
+                        ng-click="cc.selectChannel($index)"><strong>{{ channel.name }}</strong>
+                        ({{ channel.type }})</button>
+                </div>
             </div>
         </div>
+
     </div>
 
-    <div class="start-stop-buttons col-xs-6">
+    <div class="start-stop-buttons col-xs-4">
+            <h4>3. Press start button</h4>
         <button class="btn btn-danger btn-lg" ng-show="Trends.showStartButton" ng-click="Trends.start()">Start</button>
         <button class="btn btn-warning btn-lg" ng-click="Trends.stop()">Stop</button>
-        <hr />
     </div>
 
-    <div class="trends col-xs-12">
+    <div class="trends col-xs-12" ng-show="Trends.showCanvas">
+        <hr />
         <div id="CanvasContainer">
             <canvas id="TrendCanvas" width="300" height="300"></canvas>
         </div>
-        
-        
-        
+
+
+
     </div>
-   
+
 </div>

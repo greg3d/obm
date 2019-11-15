@@ -78,6 +78,7 @@
 		}
 
 		cc.showStartButton = false;
+		cc.showCanvas = false;
 
 		cc.showChList = false;
 
@@ -87,6 +88,7 @@
 
 		cc.start = function () {
 			cc.showChList = false;
+			cc.showCanvas = false;
 			cc.stop();
 
 			var type = "data";
@@ -125,12 +127,15 @@
 				//cc.num = cc.num + 1;
 
 				cc.active = true;
+				
 
 				IntServ.Custom(cc.url, req).then(function (response) {
 
 					cc.response = response.data;
 
 					cc.data = cc.response.readbufs.data;
+
+					cc.showCanvas= true;
 
 					cc.selectedList.forEach(function (channel, index) {
 						var i = channel.index;
@@ -175,6 +180,7 @@
 
 				}, function () {
 					cc.response = "Какая-то ошибочка. Вернулся плохой или пустой ответ. Или не вернулся вообще.";
+					cc.showCanvas= false;
 				});
 
 				j++;
@@ -289,12 +295,12 @@
 		var canvas = document.getElementById("TrendCanvas");
 		var ctx = canvas.getContext('2d');
 
-		var xx = 2.5;
-		var leftMargin = 0;
-		var bottomMargin = 28;
+		var xx = 0.5;
+		var leftMargin = 5;
+		var bottomMargin = 0;
 		var topMargin = 5;
-		var rightMargin = 50;
-		var yy = 2.5;
+		var rightMargin = 60;
+		var yy = 0.5;
 
 		var plotHeight = 170; //px
 
@@ -345,6 +351,11 @@
 				numberOfPlots = Trends.selectedList.length;
 				canvas.width = Math.round(canvasCont.getBoundingClientRect().width);
 				canvas.height = numberOfPlots * (plotHeight) + yy;
+
+				if (bottomMargin == 0) {
+					canvas.height = canvas.height + topMargin;
+				}
+
 				ctx.clearRect(0, 0, canvas.width, canvas.height);
 				ctx.lineWidth = 1;
 
@@ -368,7 +379,7 @@
 					}
 					
 					ctx.lineWidth = 1;
-					ctx.strokeStyle = "#000000";
+					ctx.strokeStyle = "#777777";
 					ctx.strokeRect(curPlot.x1, curPlot.y1, curPlot.x2 - curPlot.x1, curPlot.y2 - curPlot.y1);
 
 					var channel = Trends.selectedList[i];
@@ -412,13 +423,13 @@
 						ctx.font = "12px Arial";
 						ctx.textAlign = "center";
 						ctx.textBaseline = "alphabetic";
-						ctx.fillText(k, tickPoint.x, curPlot.y2 + bottomMargin / 2);
+						//ctx.fillText(k, tickPoint.x, curPlot.y2 + bottomMargin / 2);
 					}
 
 					// крайний нижний тик справа
 					ctx.textAlign = "center";
 					ctx.textBaseline = "alphabetic";
-					ctx.fillText(curPlot.xMax, curPlot.x2, curPlot.y2 + bottomMargin / 2);
+					//ctx.fillText(curPlot.xMax, curPlot.x2, curPlot.y2 + bottomMargin / 2);
 
 					// расчет тиков для Y
 					var realPlotHeight = curPlot.y2 - curPlot.y1;
@@ -460,8 +471,8 @@
 					ctx.textAlign = "left";
 					ctx.textBaseline = "middle";
 					ctx.font = "10px Arial";
-					ctx.fillText(curPlot.yMax, curPlot.x2 + 4, curPlot.y1);
-					ctx.fillText(curPlot.yMin, curPlot.x2 + 4, curPlot.y2);
+					ctx.fillText(curPlot.yMax, curPlot.x2 + 4, curPlot.y1+4);
+					ctx.fillText(curPlot.yMin, curPlot.x2 + 4, curPlot.y2-4);
 					
 					// текущее значение
 					ctx.fillStyle = "#eee";
