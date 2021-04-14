@@ -83,6 +83,30 @@
             });
         }
 
+        this.AlarmEvents = async function() {
+            let promise = new Promise((resolve, reject) => {
+                $http({
+                    method: 'POST',
+                    url: '/intouch_serv',
+                    data: {
+                        "action":"get",
+                        "type":"alarm_events"
+                    },
+                    timeout: 1000,
+                    headers: {
+                        'Content-Type': 'application/json'
+                    }
+                }).then(function(){
+                    resolve(resp);
+                }, function(){
+                    reject("error");
+                });
+            })
+
+            let res = await promise;
+
+            return res;
+        }
     }
 
     function configIntouch() {

@@ -236,6 +236,7 @@
 					"action": "get",
 					"type": "status"
 				});
+				
 				IntServ.PostRequest(req).then(function (resp) {
 					//$scope.mainError = false;
 					var sens = resp.data.sensors;
@@ -245,6 +246,8 @@
 					setTimeout(function () {
 						resolve("success");
 					}, 200);
+
+				
 				}, function (resp) {
 					setTimeout(function () {
 						reject("error");
